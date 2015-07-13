@@ -30,7 +30,7 @@ public class Game extends ApplicationAdapter
 	public Environment environment;
 	public boolean loading;
 
-	private static String data = "data";
+	private static String data = "data/person.g3db";
 
 	@Override
 	public void create () {
@@ -50,12 +50,12 @@ public class Game extends ApplicationAdapter
 		Gdx.input.setInputProcessor(camController);
 
 		assets = new AssetManager();
-		assets.load(data+"/ship.g3db", Model.class);
+		assets.load(data, Model.class);
 		loading = true;
 	}
 
 	private void doneLoading() {
-		Model ship = assets.get(data+"/ship.g3db", Model.class);
+		Model ship = assets.get(data, Model.class);
 		for (float x = -5f; x <= 5f; x += 2f) {
 			for (float z = -5f; z <= 5f; z += 2f) {
 				ModelInstance shipInstance = new ModelInstance(ship);

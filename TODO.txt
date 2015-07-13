@@ -1,1 +1,5 @@
 TODO
+
+-Algo aixi com una API del cuentapasos
+-Fer un bitxo caminant a la pantalla (amb qualsevol model, per aprendre la animació i tal)
+-Wifi P2P mas al final
