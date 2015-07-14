@@ -10,16 +10,16 @@ import anton.fons.bugz.Game;
 
 public class AndroidLauncher extends AndroidApplication
 {
+	AndroidResolver androidResolver;
+
 	@Override
 	protected void onCreate (Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-		initialize(new Game(), config);
-	}
 
-	public static void Hola()
-	{
-		Log.d("HOLAAAA", "HOLAAAAAAAAAAAAAAAAAAA");
+		androidResolver = new AndroidResolver();
+
+		initialize(new Game(androidResolver), config);
 	}
 }

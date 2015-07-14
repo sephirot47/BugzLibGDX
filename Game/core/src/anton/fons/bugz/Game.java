@@ -29,7 +29,14 @@ public class Game extends ApplicationAdapter
 
 	public boolean loading;
 
+	public static IAndroidResolver AndroidResolver;
+
 	private static ArrayList<GameObject> gameObjects = new ArrayList<GameObject>();
+
+	public Game(IAndroidResolver androidResolver)
+	{
+		AndroidResolver = androidResolver;
+	}
 
 	@Override
 	public void create ()
@@ -64,10 +71,12 @@ public class Game extends ApplicationAdapter
 		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
+		modelBatch.begin(cam);
 		for(GameObject go : gameObjects)
 		{
-			go.render(environment, cam);
+			go.render(modelBatch, environment);
 		}
+		modelBatch.end();
 	}
 
 	@Override

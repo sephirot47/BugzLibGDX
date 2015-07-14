@@ -18,10 +18,9 @@ public class GameObject
     private boolean assetsProcessed;
     private String modelFilepath;
 
-    private ModelBatch modelBatch;
     protected ModelInstance modelInstance;
 
-    protected AnimationController animationController;
+    private AnimationController animationController;
 
     public ArrayList<GameObject> childs;
 
@@ -29,50 +28,84 @@ public class GameObject
     {
         assets = new AssetManager();
 
-        modelBatch = new ModelBatch();
         this.modelFilepath = modelFilepath;
 
         childs = new ArrayList<GameObject>();
 
-        loadAssets();
+        _loadAssets();
     }
 
-    protected void loadAssets()
+    private void _loadAssets()
     {
         assets.load(modelFilepath, Model.class); //load everything we need
 
         assetsProcessed = false;
+
+        loadAssets();
     }
 
-    protected boolean assetsLoaded() { return assetsProcessed; }
-
-    protected void onAssetsLoaded()
+    private void _onAssetsLoaded()
     {
         Model model = assets.get(modelFilepath, Model.class);
         modelInstance = new ModelInstance(model); //get the model instance
 
         animationController = new AnimationController(modelInstance); //set the animController
+        animationController.allowSameAnimation = false;
 
         assetsProcessed = true;
+
+        onAssetsLoaded();
     }
 
-    public void render(Environment environment, Camera gameCamera)
+    public void render(ModelBatch modelBatch, Environment environment)
     {
         if( !assets.update() ) return; //If it's still loading...
-        else if (!assetsProcessed) onAssetsLoaded(); //Assets have just loaded, must be processed
+        else if (!assetsProcessed) _onAssetsLoaded(); //Assets have just loaded, must be processed
 
-        //Draw the model instance
-        modelBatch.begin(gameCamera);
-        modelBatch.render(modelInstance, environment);
-        modelBatch.end();
-        //
+        //Update
+        update(Gdx.graphics.getDeltaTime());
 
         //Update animations
         animationController.update(Gdx.graphics.getDeltaTime());
 
         for(GameObject child : childs) //Render its childs
         {
-            child.render(environment, gameCamera);
+            child.render(modelBatch, environment);
         }
+
+        //Draw the model instance
+        modelBatch.render(modelInstance, environment);
     }
+
+    protected void loadAssets() {}
+    protected void onAssetsLoaded() {}
+    public void update(float deltaTime) {}
+
+    //Animation functions
+    protected void pause()
+    {
+        animationController.paused = true;
+    }
+
+    protected void resume()
+    {
+        animationController.paused = false;
+    }
+
+    protected void playLoop(String animationId) { play(animationId, -1, 0.5f); }
+    protected void play(String animationId) { play(animationId, 1, 0.5f); }
+    protected void play(String animationId, int loopCount) { play(animationId, loopCount, 0.5f); }
+    protected void play(String animationId, float transitionTime) { play(animationId, 1, transitionTime); }
+    protected void playLoop(String animationId, float transitionTime) { play(animationId, -1, transitionTime); }
+    protected void play(String animationId, int loopCount, float transitionTime)
+    {
+        animationController.paused = false;
+        animationController.animate(animationId, loopCount, 1.0f, null, transitionTime);
+    }
+
+    protected void stop()
+    {
+        animationController.setAnimation(null);
+    }
+    ////////////////
 }
