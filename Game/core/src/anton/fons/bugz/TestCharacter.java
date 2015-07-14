@@ -18,6 +18,8 @@ public class TestCharacter extends GameObject
     {
         super.onAssetsLoaded();
         animationController.setAnimation("6000_dummy_walk", -1);
+
+        //AndroidLauncher.Hola();
     }
 
     @Override
