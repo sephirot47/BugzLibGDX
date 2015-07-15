@@ -6,12 +6,16 @@ import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.g3d.model.Node;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
 import java.util.Vector;
+
+import anton.fons.bugz.Game;
 
 public class GameObject implements AnimationController.AnimationListener
 {
@@ -20,8 +24,8 @@ public class GameObject implements AnimationController.AnimationListener
     private String modelFilepath;
 
     protected ModelInstance modelInstance;
-    private Vector3 position, rotationAxis, scale;
-    private float rotationDegrees;
+    private Vector3 position, scale;
+    private Quaternion rotation;
 
     private AnimationController animationController;
 
@@ -29,20 +33,23 @@ public class GameObject implements AnimationController.AnimationListener
 
     public GameObject(String modelFilepath)
     {
-        position = Vector3.Zero;
-        rotationAxis = Vector3.Zero; rotationDegrees = 0f;
-        scale = new Vector3(1f, 1f, 1f);
-
-        assets = new AssetManager();
-
         this.modelFilepath = modelFilepath;
 
-        childs = new ArrayList<GameObject>();
-
-        _loadAssets();
+        position = new Vector3(0f, 0f, 0f);
+        Game.AndroidResolver.log( position.toString());
+        rotation = new Quaternion();
+        scale = new Vector3(1f, 1f, 1f);
     }
 
-    public void create() {}
+    public void _create()
+    {
+        assets = new AssetManager();
+        childs = new ArrayList<GameObject>();
+        _loadAssets();
+
+        for(GameObject child : childs) child._create(); //Call create on childs
+        create();
+    }
 
     private void _loadAssets()
     {
@@ -50,6 +57,7 @@ public class GameObject implements AnimationController.AnimationListener
 
         assetsProcessed = false;
 
+        for(GameObject child : childs) child._loadAssets(); //Load child assets
         loadAssets();
     }
 
@@ -57,109 +65,133 @@ public class GameObject implements AnimationController.AnimationListener
     {
         Model model = assets.get(modelFilepath, Model.class);
         modelInstance = new ModelInstance(model); //get the model instance
-
         animationController = new AnimationController(modelInstance); //set the animController
         animationController.allowSameAnimation = false;
 
         assetsProcessed = true;
-
         onAssetsLoaded();
     }
 
-
-    public void render(ModelBatch modelBatch, Environment environment)
+    public void _render(ModelBatch modelBatch, Environment environment)
     {
         if( !assets.update() ) return; //If it's still loading...
         else if (!assetsProcessed) _onAssetsLoaded(); //Assets have just loaded, must be processed
 
-        //Update
-        update(Gdx.graphics.getDeltaTime());
-
-        //Update animations
-        try{ animationController.update(Gdx.graphics.getDeltaTime()); }
+        try{ animationController.update(Gdx.graphics.getDeltaTime()); } //Update animations
         catch(Exception e) { /*This is to avoid an app crash due to a libGDX iterators bug :S*/}
 
-        modelInstance.transform = new Matrix4();
-        modelInstance.transform.translate(position.x, position.y, position.z);
-        modelInstance.transform.rotate(rotationAxis.x, rotationAxis.y, rotationAxis.z,
-                rotationDegrees);
-        modelInstance.transform.scale(scale.x, scale.y, scale.z);
-
+        updateTransform();
         for(GameObject child : childs) //Render its childs
-        {
-            child.render(modelBatch, environment);
-        }
+            child._render(modelBatch, environment);
 
-        //Draw the model instance
-        modelBatch.render(modelInstance, environment);
+        modelBatch.render(modelInstance, environment); //Draw the model instance
+        render(modelBatch, environment); //Call the user render method
+    }
+
+    public void _update(float deltaTime)
+    {
+        if(!assetsLoaded()) return;
+
+        for(GameObject child : childs) child._update(deltaTime); //Update childs
+        update(deltaTime);
     }
 
     protected boolean assetsLoaded() { return assetsProcessed; }
-    protected void loadAssets() {}
-    protected void onAssetsLoaded() {}
-    public void update(float deltaTime) {}
 
-    //Animation functions
-    protected void pause()
-    {
-        animationController.paused = true;
-    }
+    //Child related functions ///////////////////////////////////////////////////
+        void addChild(GameObject child) { childs.add(child); }
+        void removeChild(GameObject child) { childs.remove(child); }
+    /////////////////////////////////////////////////////////////////////////////
 
-    protected void resume()
-    {
-        animationController.paused = false;
-    }
+    //Overridable functions /////////////////////////////////////////////////////
+        protected void create() {}
+        protected void loadAssets() {}
+        protected void onAssetsLoaded() {}
+        protected void update(float deltaTime) {}
+        protected void render(ModelBatch modelBatch, Environment environment) {}
+    /////////////////////////////////////////////////////////////////////////////
 
-    protected void playLoop(String animationId) { play(animationId, -1, 0.5f); }
-    protected void play(String animationId) { play(animationId, 1, 0.5f); }
-    protected void play(String animationId, int loopCount) { play(animationId, loopCount, 0.5f); }
-    protected void play(String animationId, float transitionTime) { play(animationId, 1, transitionTime); }
-    protected void playLoop(String animationId, float transitionTime) {
-        play(animationId, -1, transitionTime); }
-    protected void play(String animationId, int loopCount, float transitionTime)
-    {
-        animationController.paused = false;
-        animationController.animate(animationId, loopCount, 1.0f, this, transitionTime);
-    }
+    //Animation functions ///////////////////////////////////////////////////////
+        protected void pause()
+        {
+            animationController.paused = true;
+        }
 
-    protected void stop()
-    {
-        animationController.setAnimation(null);
-    }
+        protected void resume()
+        {
+            animationController.paused = false;
+        }
 
-    //Animation Event listeners
+        protected void playLoop(String animationId) { play(animationId, -1, 0.5f); }
+        protected void play(String animationId) { play(animationId, 1, 0.5f); }
+        protected void play(String animationId, int loopCount) { play(animationId, loopCount, 0.5f); }
+        protected void play(String animationId, float transitionTime) { play(animationId, 1, transitionTime); }
+        protected void playLoop(String animationId, float transitionTime) {
+            play(animationId, -1, transitionTime); }
+        protected void play(String animationId, int loopCount, float transitionTime)
+        {
+            animationController.paused = false;
+            animationController.animate(animationId, loopCount, 1.0f, this, transitionTime);
+        }
 
-    //Override this if you want to handle an animation end
-    protected void onAnimationEnd(AnimationController.AnimationDesc animation) {}
-    //Override this if you want to handle an animation loop
-    protected void onAnimationLoop(AnimationController.AnimationDesc animation) {}
+        protected void stop()
+        {
+            animationController.setAnimation(null);
+        }
+    /////////////////////////////////////////////////////////////////////////////
 
-    @Override //Called when an animation ends
-    public final void onEnd(AnimationController.AnimationDesc animation){
-        onAnimationEnd(animation);
-    }
-    @Override  //Called when an animation loops
-    public final void onLoop(AnimationController.AnimationDesc animation) {
-        onAnimationLoop(animation);
-    }
-    ////////////////
+    //Animation Event listeners /////////////////////////////////////////////////
+        //Override this if you want to handle an animation end
+        protected void onAnimationEnd(AnimationController.AnimationDesc animation) {}
+        //Override this if you want to handle an animation loop
+        protected void onAnimationLoop(AnimationController.AnimationDesc animation) {}
 
-    //Transform functions
-    public void setScale(float scale) { this.scale = new Vector3(scale, scale, scale); }
-    public void setScale(Vector3 scale) { this.scale = scale; }
+        @Override //Called when an animation ends
+        public final void onEnd(AnimationController.AnimationDesc animation){
+            onAnimationEnd(animation);
+        }
+        @Override  //Called when an animation loops
+        public final void onLoop(AnimationController.AnimationDesc animation) {
+            onAnimationLoop(animation);
+        }
+    /////////////////////////////////////////////////////////////////////////////
 
-    public void setRotation(float axisX, float axisY, float axisZ, float degrees)
-    {
-        this.rotationAxis = new Vector3(axisX, axisY, axisZ);
-        this.rotationDegrees = degrees;
-    }
-    public void setRotation(Vector3 axis, float degrees)
-    {
-        this.rotationAxis = axis;
-        this.rotationDegrees = degrees;
-    }
+    //Transform functions ///////////////////////////////////////////////////////
+        //SCALE
+        public void setScale(float scale) { this.scale = new Vector3(scale, scale, scale); }
+        public void setScale(Vector3 scale) { this.scale = scale; }
 
-    public void setPosition(float x, float y, float z) { this.position = new Vector3(x,y,z); }
-    public void setPosition(Vector3 pos) { this.position = pos; }
-    /////////////////////
+        //ROTATE
+        public void setRotation(float axisX, float axisY, float axisZ, float degrees)
+        {
+            rotation.setFromAxis(axisX, axisY, axisZ, degrees);
+        }
+        public void setRotation(Vector3 axis, float degrees)
+        {
+            rotation.setFromAxis(axis, degrees);
+        }
+        public void rotate(float axisX, float axisY, float axisZ, float degrees)
+        {
+            rotate(new Vector3(axisX, axisY, axisZ), degrees);
+        }
+        public void rotate(Vector3 axis, float degrees)
+        {
+            Quaternion rot = new Quaternion();
+            rot.setFromAxis(axis, degrees);
+            rotation.mul(rot);
+        }
+
+        //TRANSLATE
+        public void setPosition(float x, float y, float z) { this.position = new Vector3(x,y,z); }
+        public void setPosition(Vector3 pos) { this.position = new Vector3(pos.x, pos.y, pos.z); }
+
+        //UPDATE MATRIX
+        private void updateTransform()
+        {
+            modelInstance.transform.idt();
+            modelInstance.transform.translate(position.x, position.y, position.z);
+            modelInstance.transform.rotate(rotation);
+            modelInstance.transform.scale(scale.x, scale.y, scale.z);
+        }
+    /////////////////////////////////////////////////////////////////////////////
 }

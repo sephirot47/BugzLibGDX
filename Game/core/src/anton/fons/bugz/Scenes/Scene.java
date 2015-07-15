@@ -12,29 +12,23 @@ import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
-import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import anton.fons.bugz.GameObjects.GameObject;
+import anton.fons.bugz.SceneGraphNode;
 
 public class Scene
 {
     public ModelBatch modelBatch;
 
-    private SpriteBatch spriteBatch;
-    private BitmapFont font;
-    private static String textToPrint = "";
-
     public AssetManager assets;
 
     public Environment environment;
-
     public Camera cam;
     private Viewport viewport;
 
@@ -42,12 +36,8 @@ public class Scene
 
     public Scene() {}
 
-    public void create()
+    public void _create()
     {
-        spriteBatch = new SpriteBatch();
-        font = new BitmapFont();
-        font.setColor(Color.RED);
-
         assets = new AssetManager();
 
         modelBatch = new ModelBatch();
@@ -57,7 +47,7 @@ public class Scene
         environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
 
         cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        cam.position.set(7f, 7f, 7f);
+        cam.position.set(0f, 4f, 10f);
         cam.lookAt(0, 0, 0);
         cam.near = 1f;
         cam.far = 300f;
@@ -68,46 +58,46 @@ public class Scene
 
         gameObjects = new ArrayList<GameObject>();
 
-        for(GameObject go : gameObjects)  go.create();
+        create();
     }
 
-    public void update()
+    public void _update()
     {
+        for(GameObject go : gameObjects) go._update(Gdx.graphics.getDeltaTime());
+        update();
     }
 
-    public void render()
+    public void _render()
     {
         //Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
+        prerender();
+
         //Render all gameObjects
         modelBatch.begin(cam);
-        for(GameObject go : gameObjects)  go.render(modelBatch, environment);
+        for(GameObject go : gameObjects)
+        {
+            go._render(modelBatch, environment);
+        }
         modelBatch.end();
         //
 
-        //Render screenLog text
-        spriteBatch.begin();
-        Matrix4 transform = new Matrix4();
-        //transform.scale(5.0f, 5.0f, 5.0f);
-        spriteBatch.setTransformMatrix(transform);
-        font.draw(spriteBatch, textToPrint, 100, 100);
-        spriteBatch.end();
-        //
+        postrender();
     }
 
-    public void dispose()
+    public void _dispose()
     {
         modelBatch.dispose();
         assets.dispose();
 
-        spriteBatch.dispose();
-        font.dispose();
+        dispose();
     }
 
-    public void resize(int width, int height)
+    public void _resize(int width, int height)
     {
         viewport.update(width, height);
+        resize(width, height);
     }
 
     public void pause()
@@ -120,10 +110,10 @@ public class Scene
 
     public void screenLog(String msg)
     {
-        textToPrint = new String(msg);
+
     }
 
-    public void addGameObject(GameObject go) { gameObjects.add(go); }
+    public void addGameObject(GameObject go) { gameObjects.add(go); go._create(); }
     public void removeGameObject(GameObject go) { gameObjects.remove(go); }
     public void setEnvironment(Environment env) { environment = env; }
     public void setViewport(Viewport viewport) { this.viewport = viewport; }
@@ -133,4 +123,11 @@ public class Scene
     public Environment getEnvironment() { return environment; }
     public Viewport getViewport() { return viewport; }
     public Camera getCamera() { return cam; }
+
+    public void create() {}
+    public void update() {}
+    public void prerender() {}
+    public void postrender() {}
+    public void dispose() {}
+    public void resize(int width, int height) {}
 }

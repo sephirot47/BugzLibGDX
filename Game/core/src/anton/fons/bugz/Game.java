@@ -1,10 +1,11 @@
 package anton.fons.bugz;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import anton.fons.bugz.Scenes.*;
 
 import java.util.ArrayList;
 
-import anton.fons.bugz.Scenes.WalkingScene;
+import anton.fons.bugz.Scenes.*;
 
 public class Game extends ApplicationAdapter
 {
@@ -12,9 +13,9 @@ public class Game extends ApplicationAdapter
 
 	public boolean created = false;
 
-	private ArrayList<anton.fons.bugz.Scenes.Scene> scenes;
-	private anton.fons.bugz.Scenes.Scene currentScene;
-	private anton.fons.bugz.Scenes.WalkingScene walkingScene;
+	private ArrayList<Scene> scenes;
+	private Scene currentScene;
+	private WalkingScene walkingScene;
 
 	public Game(IAndroidResolver androidResolver)
 	{
@@ -23,18 +24,18 @@ public class Game extends ApplicationAdapter
 
 	public void changeScene(anton.fons.bugz.Scenes.Scene newScene)
 	{
-		if(currentScene != null) currentScene.dispose();
+		if(currentScene != null) currentScene._dispose();
 
-		newScene.create();
+		newScene._create();
 		currentScene = newScene;
 	}
 
 	@Override
-	public void create ()
+	public void create()
 	{
-		walkingScene = new WalkingScene();
+		scenes = new ArrayList<Scene>();
 
-		scenes = new ArrayList<anton.fons.bugz.Scenes.Scene>();
+		walkingScene = new WalkingScene();
 		scenes.add(walkingScene);
 
 		changeScene(walkingScene);
@@ -45,8 +46,11 @@ public class Game extends ApplicationAdapter
 	@Override
 	public void render ()
 	{
-		currentScene.update();
-		currentScene.render();
+		if(currentScene != null)
+		{
+			currentScene._update();
+			currentScene._render();
+		}
 	}
 
 	@Override
@@ -58,7 +62,7 @@ public class Game extends ApplicationAdapter
 	@Override
 	public void resize(int width, int height)
 	{
-		currentScene.resize(width, height);
+		currentScene._resize(width, height);
 	}
 
 	@Override
@@ -81,5 +85,5 @@ public class Game extends ApplicationAdapter
 		}
 	}
 
-	public anton.fons.bugz.Scenes.Scene getCurrentScene() { return currentScene; }
+	public Scene getCurrentScene() { return currentScene; }
 }
