@@ -3,20 +3,28 @@ package anton.fons.bugz;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.Array;
 
 import java.util.ArrayList;
 
 public class Game extends ApplicationAdapter
 {
+	private SpriteBatch spriteBatch;
+	private BitmapFont font;
+	private static String textToPrint = "";
+
 	public AssetManager assets;
 
 	public Environment environment;
@@ -41,6 +49,10 @@ public class Game extends ApplicationAdapter
 	@Override
 	public void create ()
 	{
+		spriteBatch = new SpriteBatch();
+		font = new BitmapFont();
+		font.setColor(Color.RED);
+
 		assets = new AssetManager();
 
 		modelBatch = new ModelBatch();
@@ -77,6 +89,15 @@ public class Game extends ApplicationAdapter
 			go.render(modelBatch, environment);
 		}
 		modelBatch.end();
+
+		//Render screenLog text
+		spriteBatch.begin();
+		Matrix4 transform = new Matrix4();
+		//transform.scale(5.0f, 5.0f, 5.0f);
+		spriteBatch.setTransformMatrix(transform);
+		font.draw(spriteBatch, textToPrint, 100, 100);
+		spriteBatch.end();
+		//
 	}
 
 	@Override
@@ -85,6 +106,9 @@ public class Game extends ApplicationAdapter
 		modelBatch.dispose();
 		instances.clear();
 		assets.dispose();
+
+		spriteBatch.dispose();
+		font.dispose();
 	}
 
 	@Override
@@ -97,5 +121,10 @@ public class Game extends ApplicationAdapter
 
 	@Override
 	public void resume() {
+	}
+
+	public static void screenLog(String msg)
+	{
+		textToPrint = new String(msg);
 	}
 }

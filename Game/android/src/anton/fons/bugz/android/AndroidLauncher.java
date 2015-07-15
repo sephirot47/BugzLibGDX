@@ -1,7 +1,11 @@
 package anton.fons.bugz.android;
 
+import android.app.Activity;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
@@ -10,7 +14,10 @@ import anton.fons.bugz.Game;
 
 public class AndroidLauncher extends AndroidApplication
 {
-	AndroidResolver androidResolver;
+	public static Activity activity;
+
+	private StepManager stepManager;
+	private AndroidResolver androidResolver;
 
 	@Override
 	protected void onCreate (Bundle savedInstanceState)
@@ -18,8 +25,25 @@ public class AndroidLauncher extends AndroidApplication
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 
+		activity = this;
+
+		stepManager = new StepManager();
 		androidResolver = new AndroidResolver();
 
 		initialize(new Game(androidResolver), config);
+	}
+
+	@Override
+	protected void onResume()
+	{
+		super.onResume();
+		stepManager.onResume();
+	}
+
+	@Override
+	protected void onPause()
+	{
+		super.onPause();
+		stepManager.onPause();
 	}
 }
