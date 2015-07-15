@@ -14,22 +14,19 @@ public class WalkingScene extends Scene
     private TestPlanet testPlanet;
 
     @Override
-    public void create()
+    protected void create()
     {
+        super.create();
+
         testCharacter = new TestCharacter();
-        addGameObject(testCharacter);
+        addChild(testCharacter);
 
         testPlanet = new TestPlanet(testCharacter);
-        addGameObject(testPlanet);
-    }
-
-    public void update()
-    {
+        addChild(testPlanet);
     }
 
     public void onStepDone()
     {
         testCharacter.onStepDone();
     }
-
 }

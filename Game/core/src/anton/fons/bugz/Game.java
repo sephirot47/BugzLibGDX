@@ -1,6 +1,8 @@
 package anton.fons.bugz;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
+
 import anton.fons.bugz.Scenes.*;
 
 import java.util.ArrayList;
@@ -13,7 +15,6 @@ public class Game extends ApplicationAdapter
 
 	public boolean created = false;
 
-	private ArrayList<Scene> scenes;
 	private Scene currentScene;
 	private WalkingScene walkingScene;
 
@@ -22,24 +23,11 @@ public class Game extends ApplicationAdapter
 		AndroidResolver = androidResolver;
 	}
 
-	public void changeScene(anton.fons.bugz.Scenes.Scene newScene)
-	{
-		if(currentScene != null) currentScene._dispose();
-
-		newScene._create();
-		currentScene = newScene;
-	}
-
 	@Override
 	public void create()
 	{
-		scenes = new ArrayList<Scene>();
-
 		walkingScene = new WalkingScene();
-		scenes.add(walkingScene);
-
 		changeScene(walkingScene);
-
 		created = true;
 	}
 
@@ -48,15 +36,15 @@ public class Game extends ApplicationAdapter
 	{
 		if(currentScene != null)
 		{
-			currentScene._update();
-			currentScene._render();
+			currentScene._update(Gdx.graphics.getDeltaTime());
+			currentScene._sceneRender();
 		}
 	}
 
 	@Override
 	public void dispose ()
 	{
-		for(anton.fons.bugz.Scenes.Scene s : scenes) s.dispose();
+		walkingScene.dispose();
 	}
 
 	@Override
@@ -86,4 +74,12 @@ public class Game extends ApplicationAdapter
 	}
 
 	public Scene getCurrentScene() { return currentScene; }
+
+	public void changeScene(Scene newScene)
+	{
+		if(currentScene != null) currentScene._dispose();
+
+		newScene._create();
+		currentScene = newScene;
+	}
 }

@@ -19,26 +19,30 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import java.util.ArrayList;
 import java.util.List;
 
+import anton.fons.bugz.Game;
 import anton.fons.bugz.GameObjects.GameObject;
 import anton.fons.bugz.SceneGraphNode;
 
-public class Scene
+public class Scene extends SceneGraphNode
 {
-    public ModelBatch modelBatch;
+    private AssetManager assetsManager;
 
-    public AssetManager assets;
+    private ModelBatch modelBatch;
 
-    public Environment environment;
-    public Camera cam;
+    private Environment environment;
+    private Camera cam;
     private Viewport viewport;
 
-    private ArrayList<GameObject> gameObjects;
-
-    public Scene() {}
-
-    public void _create()
+    public Scene()
     {
-        assets = new AssetManager();
+        super();
+    }
+
+    @Override
+    protected void create()
+    {
+        super.create();
+        assetsManager = new AssetManager();
 
         modelBatch = new ModelBatch();
 
@@ -55,79 +59,61 @@ public class Scene
 
         viewport = new ExtendViewport(100.0f, 100.0f, cam);
         viewport.apply();
-
-        gameObjects = new ArrayList<GameObject>();
-
-        create();
     }
 
-    public void _update()
+    //Called from Game, in order to start all the rendering (needed because Game doesn't have the)
+    //modelBatch or the environment
+    public final void _sceneRender()
     {
-        for(GameObject go : gameObjects) go._update(Gdx.graphics.getDeltaTime());
-        update();
+        _render(modelBatch, environment);
     }
 
-    public void _render()
+    @Override
+    protected void prerender(ModelBatch modelBatch, Environment environment)
     {
+        super.prerender(modelBatch, environment);
+
         //Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
-        prerender();
-
-        //Render all gameObjects
         modelBatch.begin(cam);
-        for(GameObject go : gameObjects)
-        {
-            go._render(modelBatch, environment);
-        }
+        // Here all the render functions of the childs will be called (SceneGraphNode's duty)
+    }
+
+    @Override
+    protected void postrender(ModelBatch modelBatch, Environment environment)
+    {
+        super.postrender(modelBatch, environment);
+
+        // And once all the childs are rendered, end the modelBatch
         modelBatch.end();
-        //
-
-        postrender();
     }
 
-    public void _dispose()
+    public void dispose()
     {
+        super.dispose();
         modelBatch.dispose();
-        assets.dispose();
-
-        dispose();
+        assetsManager.dispose();
     }
 
-    public void _resize(int width, int height)
+    @Override
+    public void resize(int width, int height)
     {
+        super.resize(width, height);
         viewport.update(width, height);
-        resize(width, height);
     }
 
-    public void pause()
+    @Override
+    public AssetManager getAssetsManager()
     {
+        return assetsManager;
     }
 
-    public void resume()
-    {
-    }
-
-    public void screenLog(String msg)
-    {
-
-    }
-
-    public void addGameObject(GameObject go) { gameObjects.add(go); go._create(); }
-    public void removeGameObject(GameObject go) { gameObjects.remove(go); }
     public void setEnvironment(Environment env) { environment = env; }
     public void setViewport(Viewport viewport) { this.viewport = viewport; }
     public void setCamera(Camera camera) { cam = camera; }
 
-    public List<GameObject> getGameObjects() { return gameObjects; }
     public Environment getEnvironment() { return environment; }
     public Viewport getViewport() { return viewport; }
     public Camera getCamera() { return cam; }
-
-    public void create() {}
-    public void update() {}
-    public void prerender() {}
-    public void postrender() {}
-    public void dispose() {}
-    public void resize(int width, int height) {}
 }

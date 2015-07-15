@@ -1,4 +1,6 @@
 package anton.fons.bugz.GameObjects;
+import com.badlogic.gdx.graphics.g3d.Environment;
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
 
 import anton.fons.bugz.Game;
 
@@ -18,20 +20,31 @@ public class TestCharacter extends GameObject
     }
 
     @Override
-    public void create()
+    protected void create()
     {
+        super.create();
         setScale(2.0f);
     }
 
     @Override
     protected void onAssetsLoaded()
     {
+        super.onAssetsLoaded();
         playLoop(IdleAnimationId);
     }
 
+
     @Override
-    public void update(float deltaTime)
+    protected void prerender(ModelBatch modelBatch, Environment environment)
     {
+        super.prerender(modelBatch, environment);
+    }
+
+    @Override
+    protected void update(float deltaTime)
+    {
+        super.update(deltaTime);
+
         timeSinceLastStep += deltaTime;
         if(timeSinceLastStep >= TimeWaitBetweenSteps)
         {
