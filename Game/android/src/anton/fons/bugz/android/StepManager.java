@@ -50,6 +50,8 @@ public class StepManager implements SensorEventListener
     @Override
     public void onSensorChanged(SensorEvent sensorEvent)
     {
+        if(!AndroidLauncher.game.created) return;
+
         Sensor mySensor = sensorEvent.sensor;
 
         if (mySensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION)

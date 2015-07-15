@@ -10,6 +10,8 @@ public class Game extends ApplicationAdapter
 {
 	public static IAndroidResolver AndroidResolver;
 
+	public boolean created = false;
+
 	private ArrayList<anton.fons.bugz.Scenes.Scene> scenes;
 	private anton.fons.bugz.Scenes.Scene currentScene;
 	private anton.fons.bugz.Scenes.WalkingScene walkingScene;
@@ -36,6 +38,8 @@ public class Game extends ApplicationAdapter
 		scenes.add(walkingScene);
 
 		changeScene(walkingScene);
+
+		created = true;
 	}
 
 	@Override

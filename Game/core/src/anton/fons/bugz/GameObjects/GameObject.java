@@ -7,8 +7,11 @@ import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
+import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 public class GameObject implements AnimationController.AnimationListener
 {
@@ -17,6 +20,8 @@ public class GameObject implements AnimationController.AnimationListener
     private String modelFilepath;
 
     protected ModelInstance modelInstance;
+    private Vector3 position, rotationAxis, scale;
+    private float rotationDegrees;
 
     private AnimationController animationController;
 
@@ -24,6 +29,10 @@ public class GameObject implements AnimationController.AnimationListener
 
     public GameObject(String modelFilepath)
     {
+        position = Vector3.Zero;
+        rotationAxis = Vector3.Zero; rotationDegrees = 0f;
+        scale = new Vector3(1f, 1f, 1f);
+
         assets = new AssetManager();
 
         this.modelFilepath = modelFilepath;
@@ -70,6 +79,12 @@ public class GameObject implements AnimationController.AnimationListener
         try{ animationController.update(Gdx.graphics.getDeltaTime()); }
         catch(Exception e) { /*This is to avoid an app crash due to a libGDX iterators bug :S*/}
 
+        modelInstance.transform = new Matrix4();
+        modelInstance.transform.translate(position.x, position.y, position.z);
+        modelInstance.transform.rotate(rotationAxis.x, rotationAxis.y, rotationAxis.z,
+                rotationDegrees);
+        modelInstance.transform.scale(scale.x, scale.y, scale.z);
+
         for(GameObject child : childs) //Render its childs
         {
             child.render(modelBatch, environment);
@@ -99,7 +114,8 @@ public class GameObject implements AnimationController.AnimationListener
     protected void play(String animationId) { play(animationId, 1, 0.5f); }
     protected void play(String animationId, int loopCount) { play(animationId, loopCount, 0.5f); }
     protected void play(String animationId, float transitionTime) { play(animationId, 1, transitionTime); }
-    protected void playLoop(String animationId, float transitionTime) { play(animationId, -1, transitionTime); }
+    protected void playLoop(String animationId, float transitionTime) {
+        play(animationId, -1, transitionTime); }
     protected void play(String animationId, int loopCount, float transitionTime)
     {
         animationController.paused = false;
@@ -127,4 +143,23 @@ public class GameObject implements AnimationController.AnimationListener
         onAnimationLoop(animation);
     }
     ////////////////
+
+    //Transform functions
+    public void setScale(float scale) { this.scale = new Vector3(scale, scale, scale); }
+    public void setScale(Vector3 scale) { this.scale = scale; }
+
+    public void setRotation(float axisX, float axisY, float axisZ, float degrees)
+    {
+        this.rotationAxis = new Vector3(axisX, axisY, axisZ);
+        this.rotationDegrees = degrees;
+    }
+    public void setRotation(Vector3 axis, float degrees)
+    {
+        this.rotationAxis = axis;
+        this.rotationDegrees = degrees;
+    }
+
+    public void setPosition(float x, float y, float z) { this.position = new Vector3(x,y,z); }
+    public void setPosition(Vector3 pos) { this.position = pos; }
+    /////////////////////
 }

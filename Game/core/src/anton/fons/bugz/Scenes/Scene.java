@@ -38,7 +38,7 @@ public class Scene
     public Camera cam;
     private Viewport viewport;
 
-    protected ArrayList<GameObject> gameObjects;
+    private ArrayList<GameObject> gameObjects;
 
     public Scene() {}
 
