@@ -18,10 +18,4 @@ public class AndroidResolver implements IAndroidResolver
     {
         Log.d("Bugz", text);
     }
-
-    @Override
-    public int getSteps()
-    {
-        return (++steps)/100;
-    }
 }

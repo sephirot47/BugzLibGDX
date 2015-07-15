@@ -41,6 +41,8 @@ public class Game extends ApplicationAdapter
 
 	private static ArrayList<GameObject> gameObjects = new ArrayList<GameObject>();
 
+	private static TestCharacter testCharacter;
+
 	public Game(IAndroidResolver androidResolver)
 	{
 		AndroidResolver = androidResolver;
@@ -72,7 +74,8 @@ public class Game extends ApplicationAdapter
 
 		loading = true;
 
-		gameObjects.add( new TestCharacter() );
+		testCharacter = new TestCharacter();
+		gameObjects.add( testCharacter );
 	}
 
 	@Override
@@ -121,6 +124,11 @@ public class Game extends ApplicationAdapter
 
 	@Override
 	public void resume() {
+	}
+
+	public static void onStepDone()
+	{
+		testCharacter.onStepDone();
 	}
 
 	public static void screenLog(String msg)

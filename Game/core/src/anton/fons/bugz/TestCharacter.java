@@ -1,15 +1,15 @@
 package anton.fons.bugz;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.g3d.Environment;
-import com.badlogic.gdx.graphics.g3d.Model;
-import com.badlogic.gdx.graphics.g3d.ModelBatch;
-import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 
 public class TestCharacter extends GameObject
 {
-    float time = 0.0f;
+    /**It's the time that the user has to make another step before the character goes idle**/
+    private static final float TimeWaitBetweenSteps = 2.0f;
+    float timeSinceLastStep = 0.0f;
+
+    private static final String IdleAnimationId = "6000_dummy_idle";
+    private static final String WalkAnimationId = "6000_dummy_walk";
 
     public TestCharacter()
     {
@@ -19,15 +19,24 @@ public class TestCharacter extends GameObject
     @Override
     protected void onAssetsLoaded()
     {
-        playLoop("6000_dummy_idle");
+        playLoop(IdleAnimationId);
     }
 
     @Override
     public void update(float deltaTime)
     {
-        time += deltaTime;
+        timeSinceLastStep += deltaTime;
+        if(timeSinceLastStep >= TimeWaitBetweenSteps)
+        {
+            playLoop(IdleAnimationId); //Go to idle
+        }
+    }
 
-        if(time > 3.0f && time < 9.0f) { playLoop("6000_dummy_walk", 0.7f); }
-        if(time > 10.0f) { playLoop("6000_dummy_idle", 0.7f); }
+    public void onStepDone()
+    {
+        if(!assetsLoaded()) return;
+
+        timeSinceLastStep = 0.0f;
+        playLoop(WalkAnimationId);
     }
 }

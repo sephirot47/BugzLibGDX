@@ -67,6 +67,7 @@ public class StepManager implements SensorEventListener
                 if(stepAmount >= stepAmountThreshold)
                 {
                     ++steps;
+                    Game.onStepDone();
                     lastStepTimestamp = System.currentTimeMillis();
                 }
             }
