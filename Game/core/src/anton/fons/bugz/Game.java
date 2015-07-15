@@ -1,38 +1,25 @@
 package anton.fons.bugz;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.PerspectiveCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g3d.Environment;
-import com.badlogic.gdx.graphics.g3d.ModelBatch;
-import com.badlogic.gdx.graphics.g3d.ModelInstance;
-import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
-import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
-import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
-import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.utils.Array;
 
 import java.util.ArrayList;
+
+import anton.fons.bugz.Scenes.WalkingScene;
 
 public class Game extends ApplicationAdapter
 {
 	public static IAndroidResolver AndroidResolver;
 
-	private ArrayList<Scene> scenes;
-	private Scene currentScene;
-	private WalkingScene walkingScene;
+	private ArrayList<anton.fons.bugz.Scenes.Scene> scenes;
+	private anton.fons.bugz.Scenes.Scene currentScene;
+	private anton.fons.bugz.Scenes.WalkingScene walkingScene;
 
 	public Game(IAndroidResolver androidResolver)
 	{
 		AndroidResolver = androidResolver;
 	}
 
-	public void changeScene(Scene newScene)
+	public void changeScene(anton.fons.bugz.Scenes.Scene newScene)
 	{
 		if(currentScene != null) currentScene.dispose();
 
@@ -45,7 +32,7 @@ public class Game extends ApplicationAdapter
 	{
 		walkingScene = new WalkingScene();
 
-		scenes = new ArrayList<Scene>();
+		scenes = new ArrayList<anton.fons.bugz.Scenes.Scene>();
 		scenes.add(walkingScene);
 
 		changeScene(walkingScene);
@@ -61,7 +48,7 @@ public class Game extends ApplicationAdapter
 	@Override
 	public void dispose ()
 	{
-		for(Scene s : scenes) s.dispose();
+		for(anton.fons.bugz.Scenes.Scene s : scenes) s.dispose();
 	}
 
 	@Override
@@ -90,5 +77,5 @@ public class Game extends ApplicationAdapter
 		}
 	}
 
-	public Scene getCurrentScene() { return currentScene; }
+	public anton.fons.bugz.Scenes.Scene getCurrentScene() { return currentScene; }
 }

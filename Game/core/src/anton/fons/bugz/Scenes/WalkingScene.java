@@ -1,9 +1,9 @@
-package anton.fons.bugz;
+package anton.fons.bugz.Scenes;
 
 
 public class WalkingScene extends Scene
 {
-    private TestCharacter testCharacter;
+    private anton.fons.bugz.GameObjects.TestCharacter testCharacter;
 
     public WalkingScene()
     {
@@ -15,7 +15,7 @@ public class WalkingScene extends Scene
     {
         super.create();
 
-        testCharacter = new TestCharacter();
+        testCharacter = new anton.fons.bugz.GameObjects.TestCharacter();
         gameObjects.add(testCharacter);
     }
 

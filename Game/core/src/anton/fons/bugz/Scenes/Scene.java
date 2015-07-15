@@ -1,4 +1,4 @@
-package anton.fons.bugz;
+package anton.fons.bugz.Scenes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
@@ -15,6 +15,8 @@ import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.math.Matrix4;
 
 import java.util.ArrayList;
+
+import anton.fons.bugz.GameObjects.GameObject;
 
 public class Scene
 {

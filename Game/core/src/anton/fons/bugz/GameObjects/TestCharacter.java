@@ -1,6 +1,4 @@
-package anton.fons.bugz;
-
-import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
+package anton.fons.bugz.GameObjects;
 
 public class TestCharacter extends GameObject
 {
