@@ -13,6 +13,11 @@ public class WalkingScene extends Scene
     private TestCharacter testCharacter;
     private TestPlanet testPlanet;
 
+    public WalkingScene()
+    {
+        super();
+    }
+
     @Override
     protected void create()
     {

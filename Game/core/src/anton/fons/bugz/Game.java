@@ -44,7 +44,7 @@ public class Game extends ApplicationAdapter
 	@Override
 	public void dispose ()
 	{
-		walkingScene.dispose();
+		currentScene._dispose();
 	}
 
 	@Override
@@ -56,13 +56,13 @@ public class Game extends ApplicationAdapter
 	@Override
 	public void pause()
 	{
-		currentScene.pause();
+		currentScene._pause();
 	}
 
 	@Override
 	public void resume()
 	{
-		currentScene.pause();
+		currentScene._pause();
 	}
 
 	public void onStepDone()

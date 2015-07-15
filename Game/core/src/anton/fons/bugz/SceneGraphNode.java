@@ -39,7 +39,7 @@ public class SceneGraphNode
     public final void _loadAssets()
     {
         loadAssets();
-        for(SceneGraphNode child : children) child._loadAssets();
+        //No need to call _loadAssets on childs, _create does it
     }
 
     public final void _onAssetsLoaded()
@@ -59,6 +59,7 @@ public class SceneGraphNode
 
         if(assetsProcessed)
         {
+            //Game.AndroidResolver.log("_update " + this);
             update(deltaTime);
             for (SceneGraphNode child : children) child._update(deltaTime);
         }
@@ -126,7 +127,7 @@ public class SceneGraphNode
             child.parent = null;
         }
 
-        public final SceneGraphNode getParent() { return parent; }
+        public SceneGraphNode getParent() { return parent; }
         public final ArrayList<SceneGraphNode> getChildren() { return children; }
     ////////////////////////////////////////////////////////////////////////////
 

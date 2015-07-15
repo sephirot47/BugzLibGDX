@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 
 import anton.fons.bugz.Game;
 import anton.fons.bugz.SceneGraphNode;
+import anton.fons.bugz.Scenes.Scene;
 
 public class GameObject extends SceneGraphNode implements AnimationController.AnimationListener
 {
@@ -26,6 +27,7 @@ public class GameObject extends SceneGraphNode implements AnimationController.An
     protected void loadAssets()
     {
         super.loadAssets();
+
         getAssetsManager().load(modelFilepath, Model.class); //load everything we need
     }
 
@@ -33,7 +35,6 @@ public class GameObject extends SceneGraphNode implements AnimationController.An
     protected void onAssetsLoaded()
     {
         super.onAssetsLoaded();
-        Game.AndroidResolver.log("On Assets Loadedddddddddddddd " + this);
         Model model = getAssetsManager().get(modelFilepath, Model.class);
         modelInstance = new ModelInstance(model); //get the model instance
         animationController = new AnimationController(modelInstance); //set the animController
@@ -47,7 +48,7 @@ public class GameObject extends SceneGraphNode implements AnimationController.An
         try{ animationController.update(Gdx.graphics.getDeltaTime()); } //Update animations
         catch(Exception e) { /*This is to avoid an app crash due to a libGDX iterators bug :S*/ }
 
-        //updateTransform();
+        updateTransform();
         modelBatch.render(modelInstance, environment); //Draw the model instance
     }
     /////////////////////////////////////////////////////////////////////////////
@@ -80,7 +81,6 @@ public class GameObject extends SceneGraphNode implements AnimationController.An
         {
             animationController.setAnimation(null);
         }
-
     /////////////////////////////////////////////////////////////////////////////
 
     //Animation Event listeners /////////////////////////////////////////////////

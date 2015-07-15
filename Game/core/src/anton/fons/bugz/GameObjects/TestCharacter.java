@@ -6,6 +6,7 @@ import anton.fons.bugz.Game;
 
 public class TestCharacter extends GameObject
 {
+
     /**It's the time that the user has to make another step before the character goes idle**/
     private static final float TimeWaitBetweenSteps = 2.0f;
     float timeSinceLastStep = 0.0f;
@@ -16,7 +17,7 @@ public class TestCharacter extends GameObject
 
     public TestCharacter()
     {
-        super("models/characters/person.g3db");
+        super("models/characters/person.g3dj");
     }
 
     @Override
@@ -59,7 +60,6 @@ public class TestCharacter extends GameObject
 
         timeSinceLastStep = 0.0f;
         walking = true;
-        Game.AndroidResolver.log("STEPPPP");
         playLoop(WalkAnimationId);
     }
 }

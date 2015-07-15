@@ -58,7 +58,7 @@ public class Scene extends SceneGraphNode
         cam.update();
 
         viewport = new ExtendViewport(100.0f, 100.0f, cam);
-        viewport.apply();
+        //viewport.apply();
     }
 
     //Called from Game, in order to start all the rendering (needed because Game doesn't have the)
@@ -72,7 +72,6 @@ public class Scene extends SceneGraphNode
     protected void prerender(ModelBatch modelBatch, Environment environment)
     {
         super.prerender(modelBatch, environment);
-
         //Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
@@ -112,6 +111,9 @@ public class Scene extends SceneGraphNode
     public void setEnvironment(Environment env) { environment = env; }
     public void setViewport(Viewport viewport) { this.viewport = viewport; }
     public void setCamera(Camera camera) { cam = camera; }
+
+    @Override
+    public SceneGraphNode getParent() { return this; }
 
     public Environment getEnvironment() { return environment; }
     public Viewport getViewport() { return viewport; }
