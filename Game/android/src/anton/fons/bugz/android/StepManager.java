@@ -67,7 +67,7 @@ public class StepManager implements SensorEventListener
                 if(stepAmount >= stepAmountThreshold)
                 {
                     ++steps;
-                    Game.onStepDone();
+                    AndroidLauncher.game.onStepDone();
                     lastStepTimestamp = System.currentTimeMillis();
                 }
             }
@@ -84,7 +84,7 @@ public class StepManager implements SensorEventListener
             //Log.d("Bugz", "( " + x + ", " + y + ", " + z + " )");
         }
 
-        Game.screenLog("Steps: " + steps);
+        AndroidLauncher.game.getCurrentScene().screenLog("Steps: " + steps);
     }
 
     @Override

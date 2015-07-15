@@ -19,6 +19,8 @@ public class AndroidLauncher extends AndroidApplication
 	private StepManager stepManager;
 	private AndroidResolver androidResolver;
 
+	public static Game game;
+
 	@Override
 	protected void onCreate (Bundle savedInstanceState)
 	{
@@ -30,7 +32,8 @@ public class AndroidLauncher extends AndroidApplication
 		stepManager = new StepManager();
 		androidResolver = new AndroidResolver();
 
-		initialize(new Game(androidResolver), config);
+		game = new Game(androidResolver);
+		initialize(game, config);
 	}
 
 	@Override

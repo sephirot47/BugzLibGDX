@@ -35,6 +35,8 @@ public class GameObject implements AnimationController.AnimationListener
         _loadAssets();
     }
 
+    public void create() {}
+
     private void _loadAssets()
     {
         assets.load(modelFilepath, Model.class); //load everything we need
@@ -56,6 +58,7 @@ public class GameObject implements AnimationController.AnimationListener
 
         onAssetsLoaded();
     }
+
 
     public void render(ModelBatch modelBatch, Environment environment)
     {

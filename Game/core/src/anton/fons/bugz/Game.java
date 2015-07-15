@@ -21,118 +21,74 @@ import java.util.ArrayList;
 
 public class Game extends ApplicationAdapter
 {
-	private SpriteBatch spriteBatch;
-	private BitmapFont font;
-	private static String textToPrint = "";
-
-	public AssetManager assets;
-
-	public Environment environment;
-
-	public PerspectiveCamera cam;
-	public CameraInputController camController;
-
-	public ModelBatch modelBatch;
-	public Array<ModelInstance> instances = new Array<ModelInstance>();
-
-	public boolean loading;
-
 	public static IAndroidResolver AndroidResolver;
 
-	private static ArrayList<GameObject> gameObjects = new ArrayList<GameObject>();
-
-	private static TestCharacter testCharacter;
+	private ArrayList<Scene> scenes;
+	private Scene currentScene;
+	private WalkingScene walkingScene;
 
 	public Game(IAndroidResolver androidResolver)
 	{
 		AndroidResolver = androidResolver;
 	}
 
+	public void changeScene(Scene newScene)
+	{
+		if(currentScene != null) currentScene.dispose();
+
+		newScene.create();
+		currentScene = newScene;
+	}
+
 	@Override
 	public void create ()
 	{
-		spriteBatch = new SpriteBatch();
-		font = new BitmapFont();
-		font.setColor(Color.RED);
+		walkingScene = new WalkingScene();
 
-		assets = new AssetManager();
+		scenes = new ArrayList<Scene>();
+		scenes.add(walkingScene);
 
-		modelBatch = new ModelBatch();
-		environment = new Environment();
-		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
-		environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
-
-		cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		cam.position.set(7f, 7f, 7f);
-		cam.lookAt(0, 0, 0);
-		cam.near = 1f;
-		cam.far = 300f;
-		cam.update();
-
-		camController = new CameraInputController(cam);
-		Gdx.input.setInputProcessor(camController);
-
-		loading = true;
-
-		testCharacter = new TestCharacter();
-		gameObjects.add( testCharacter );
+		changeScene(walkingScene);
 	}
 
 	@Override
 	public void render ()
 	{
-		camController.update();
-
-		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-
-		modelBatch.begin(cam);
-		for(GameObject go : gameObjects)
-		{
-			go.render(modelBatch, environment);
-		}
-		modelBatch.end();
-
-		//Render screenLog text
-		spriteBatch.begin();
-		Matrix4 transform = new Matrix4();
-		//transform.scale(5.0f, 5.0f, 5.0f);
-		spriteBatch.setTransformMatrix(transform);
-		font.draw(spriteBatch, textToPrint, 100, 100);
-		spriteBatch.end();
-		//
+		currentScene.update();
+		currentScene.render();
 	}
 
 	@Override
 	public void dispose ()
 	{
-		modelBatch.dispose();
-		instances.clear();
-		assets.dispose();
-
-		spriteBatch.dispose();
-		font.dispose();
+		for(Scene s : scenes) s.dispose();
 	}
 
 	@Override
-	public void resize(int width, int height) {
-	}
-
-	@Override
-	public void pause() {
-	}
-
-	@Override
-	public void resume() {
-	}
-
-	public static void onStepDone()
+	public void resize(int width, int height)
 	{
-		testCharacter.onStepDone();
+		currentScene.resize(width, height);
 	}
 
-	public static void screenLog(String msg)
+	@Override
+	public void pause()
 	{
-		textToPrint = new String(msg);
+		currentScene.pause();
 	}
+
+	@Override
+	public void resume()
+	{
+		currentScene.pause();
+	}
+
+	public void onStepDone()
+	{
+		if(currentScene == walkingScene)
+		{
+			walkingScene.onStepDone();
+		}
+	}
+
+	public Scene getCurrentScene() { return currentScene; }
 }
