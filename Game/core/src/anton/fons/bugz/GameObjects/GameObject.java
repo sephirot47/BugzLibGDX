@@ -102,7 +102,7 @@ public class GameObject extends SceneGraphNode implements AnimationController.An
     //Transform functions ///////////////////////////////////////////////////////
         private void updateTransform()
         {
-            modelInstance.transform = getTransformMatrix();
+            modelInstance.transform = getGlobalTransform();
         }
     /////////////////////////////////////////////////////////////////////////////
 }

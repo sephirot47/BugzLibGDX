@@ -158,7 +158,20 @@ public class SceneGraphNode
         //TRANSLATE
         public void setPosition(float x, float y, float z) { this.position = new Vector3(x,y,z); }
         public void setPosition(Vector3 pos) { this.position = new Vector3(pos.x, pos.y, pos.z); }
-        public final Matrix4 getTransformMatrix()
+
+        //TRANSFORM
+        public Matrix4 getGlobalTransform()
+        {
+            Matrix4 local = getLocalTransform();
+            Game.AndroidResolver.log("LOCAL: " + local.toString());
+            if (parent == null) return local;
+            Game.AndroidResolver.log("GLOBAL: " + parent.getGlobalTransform().toString());
+            Matrix4.mul(local.val, parent.getGlobalTransform().val);
+            Game.AndroidResolver.log("RESULT: " + local.toString());
+            return local;
+        }
+
+        public final Matrix4 getLocalTransform()
         {
             Matrix4 transform = new Matrix4();
             transform.translate(position.x, position.y, position.z);
