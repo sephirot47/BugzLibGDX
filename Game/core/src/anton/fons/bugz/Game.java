@@ -17,6 +17,7 @@ public class Game extends ApplicationAdapter
 
 	private Scene currentScene;
 	private WalkingScene walkingScene;
+	private BoardScene boardScene;
 
 	public Game(IAndroidResolver androidResolver)
 	{
@@ -27,6 +28,8 @@ public class Game extends ApplicationAdapter
 	public void create()
 	{
 		walkingScene = new WalkingScene();
+		boardScene = new BoardScene();
+
 		changeScene(walkingScene);
 		created = true;
 	}
@@ -65,21 +68,20 @@ public class Game extends ApplicationAdapter
 		currentScene._pause();
 	}
 
+	public Scene getCurrentScene() { return currentScene; }
+	public void changeScene(Scene newScene)
+	{
+		if(currentScene != null) currentScene._dispose();
+		newScene._create();
+		currentScene = newScene;
+	}
+
+
 	public void onStepDone()
 	{
 		if(currentScene == walkingScene)
 		{
 			walkingScene.onStepDone();
 		}
-	}
-
-	public Scene getCurrentScene() { return currentScene; }
-
-	public void changeScene(Scene newScene)
-	{
-		if(currentScene != null) currentScene._dispose();
-
-		newScene._create();
-		currentScene = newScene;
 	}
 }
