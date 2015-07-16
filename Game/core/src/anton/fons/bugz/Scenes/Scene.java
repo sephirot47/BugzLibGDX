@@ -32,7 +32,6 @@ import anton.fons.bugz.SceneGraphNode;
 
 public class Scene extends SceneGraphNode
 {
-    private boolean assetsLoaded = false;
     private AssetManager assetsManager;
 
     private ModelBatch modelBatch;
@@ -46,8 +45,9 @@ public class Scene extends SceneGraphNode
     {
         super();
 
-        canvas = new Canvas(); //CREATE THE CANVAS AND ADD IT AS A CHILD :)
-        addChild(canvas);
+        //A scene is created by himself
+        //A gameObject (a diferencia), is created when it's added to a scene, and disposed when removed
+        _create();
     }
 
     @Override
@@ -68,11 +68,13 @@ public class Scene extends SceneGraphNode
         cam.near = 1f;
         cam.far = 300f;
         cam.update();
+
+        canvas = new Canvas(); //CREATE THE CANVAS AND ADD IT AS A CHILD :)
+        addChild(canvas);
     }
 
     protected void onAssetsLoaded() {
         super.onAssetsLoaded();
-        assetsLoaded = true;
     }
 
     //Called from Game, in order to start all the rendering (needed because Game doesn't have the)
@@ -122,9 +124,15 @@ public class Scene extends SceneGraphNode
     public void setEnvironment(Environment env) { environment = env; }
     //public void setViewport(Viewport viewport) { this.viewport = viewport; }
     public void setCamera(Camera camera) { cam = camera; }
+    public void setCanvas(Canvas canvas)
+    {
+        removeChild(canvas);
+        this.canvas = canvas;
+        addChild(canvas);
+    }
 
     @Override
-    public boolean assetsLoaded() { return assetsLoaded; }
+    public boolean assetsLoaded() { return assetsManager.update(); }
 
     @Override
     public SceneGraphNode getParent() { return this; }
