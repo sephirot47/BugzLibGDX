@@ -167,12 +167,10 @@ public class SceneGraphNode
         public Matrix4 getGlobalTransform()
         {
             Matrix4 local = getLocalTransform();
-            Game.AndroidResolver.log("LOCAL: " + local.toString());
             if (parent == null) return local;
-            Game.AndroidResolver.log("GLOBAL: " + parent.getGlobalTransform().toString());
-            Matrix4.mul(local.val, parent.getGlobalTransform().val);
-            Game.AndroidResolver.log("RESULT: " + local.toString());
-            return local;
+            Matrix4 global = parent.getGlobalTransform();
+            Matrix4.mul(global.val,local.val);
+            return global;
         }
 
         public final Matrix4 getLocalTransform()

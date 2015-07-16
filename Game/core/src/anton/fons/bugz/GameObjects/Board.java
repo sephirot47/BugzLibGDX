@@ -1,6 +1,7 @@
 package anton.fons.bugz.GameObjects;
 
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
+import com.badlogic.gdx.utils.TimeUtils;
 
 public class Board extends GameObject
 {
@@ -24,6 +25,7 @@ public class Board extends GameObject
     protected void update(float deltaTime)
     {
        super.update(deltaTime);
-        rotate(1f, 1f, 0f, 1);
+       rotate(1f, 1f, 0f, 1);
+       pointer.setPosition(0.0f, 100.0f*(float)Math.sin(TimeUtils.millis()*0.002),0.0f);
     }
 }
