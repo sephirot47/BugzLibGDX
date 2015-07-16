@@ -4,10 +4,13 @@ import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 
 public class Board extends GameObject
 {
+    GameObject pointer;
 
     public Board()
     {
         super("models/board/board.g3dj");
+        pointer = new GameObject("models/board/pointer/pointer.g3db");
+        addChild(pointer);
     }
 
     @Override

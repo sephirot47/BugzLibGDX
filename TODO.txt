@@ -3,3 +3,4 @@ TODO
 -Algo aixi com una API del cuentapasos
 -Fer un bitxo caminant a la pantalla (amb qualsevol model, per aprendre la animació i tal)
 -Wifi P2P mas al final
+-Si fas addChild() fora del constructor de una escena, es crida el _create del child que has afegit ??????

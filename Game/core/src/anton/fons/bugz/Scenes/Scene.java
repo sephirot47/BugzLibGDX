@@ -8,17 +8,24 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.*;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton.*;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import anton.fons.bugz.Canvas;
 import anton.fons.bugz.Game;
 import anton.fons.bugz.GameObjects.GameObject;
 import anton.fons.bugz.SceneGraphNode;
@@ -26,18 +33,21 @@ import anton.fons.bugz.SceneGraphNode;
 public class Scene extends SceneGraphNode
 {
     private boolean assetsLoaded = false;
-
     private AssetManager assetsManager;
 
     private ModelBatch modelBatch;
 
+    private Canvas canvas;
+
     private Environment environment;
     private Camera cam;
-    private Viewport viewport;
 
     public Scene()
     {
         super();
+
+        canvas = new Canvas(); //CREATE THE CANVAS AND ADD IT AS A CHILD :)
+        addChild(canvas);
     }
 
     @Override
@@ -58,13 +68,9 @@ public class Scene extends SceneGraphNode
         cam.near = 1f;
         cam.far = 300f;
         cam.update();
-
-        viewport = new ExtendViewport(100.0f, 100.0f, cam);
-        //viewport.apply();
     }
 
-    protected void onAssetsLoaded()
-    {
+    protected void onAssetsLoaded() {
         super.onAssetsLoaded();
         assetsLoaded = true;
     }
@@ -77,8 +83,7 @@ public class Scene extends SceneGraphNode
     }
 
     @Override
-    protected void prerender(ModelBatch modelBatch, Environment environment)
-    {
+    protected void prerender(ModelBatch modelBatch, Environment environment) {
         super.prerender(modelBatch, environment);
         //Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
@@ -88,8 +93,7 @@ public class Scene extends SceneGraphNode
     }
 
     @Override
-    protected void postrender(ModelBatch modelBatch, Environment environment)
-    {
+    protected void postrender(ModelBatch modelBatch, Environment environment) {
         super.postrender(modelBatch, environment);
 
         // And once all the childs are rendered, end the modelBatch
@@ -107,7 +111,6 @@ public class Scene extends SceneGraphNode
     public void resize(int width, int height)
     {
         super.resize(width, height);
-        viewport.update(width, height);
     }
 
     @Override
@@ -117,7 +120,7 @@ public class Scene extends SceneGraphNode
     }
 
     public void setEnvironment(Environment env) { environment = env; }
-    public void setViewport(Viewport viewport) { this.viewport = viewport; }
+    //public void setViewport(Viewport viewport) { this.viewport = viewport; }
     public void setCamera(Camera camera) { cam = camera; }
 
     @Override
@@ -127,6 +130,7 @@ public class Scene extends SceneGraphNode
     public SceneGraphNode getParent() { return this; }
 
     public Environment getEnvironment() { return environment; }
-    public Viewport getViewport() { return viewport; }
+    //public Viewport getViewport() { return viewport; }
     public Camera getCamera() { return cam; }
+    public Canvas getCanvas() { return canvas; }
 }

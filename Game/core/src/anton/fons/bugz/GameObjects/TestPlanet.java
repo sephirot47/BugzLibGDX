@@ -7,7 +7,7 @@ public class TestPlanet extends GameObject
 
     public TestPlanet(TestCharacter character)
     {
-        super("models/planets/planet2/planet2.g3dj");
+        super("models/planets/planet0/planet0.g3dj");
         this.character = character;
     }
 
