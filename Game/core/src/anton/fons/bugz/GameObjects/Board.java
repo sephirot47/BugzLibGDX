@@ -24,5 +24,6 @@ public class Board extends GameObject
     protected void update(float deltaTime)
     {
        super.update(deltaTime);
+        rotate(1f, 1f, 0f, 1);
     }
 }

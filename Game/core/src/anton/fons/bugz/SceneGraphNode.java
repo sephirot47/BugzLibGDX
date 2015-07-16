@@ -159,6 +159,10 @@ public class SceneGraphNode
         public void setPosition(float x, float y, float z) { this.position = new Vector3(x,y,z); }
         public void setPosition(Vector3 pos) { this.position = new Vector3(pos.x, pos.y, pos.z); }
 
+        public Vector3 getPosition() { return position; }
+        public Vector3 getScale() { return scale; }
+        public Quaternion getRotation() { return rotation; }
+
         //TRANSFORM
         public Matrix4 getGlobalTransform()
         {
