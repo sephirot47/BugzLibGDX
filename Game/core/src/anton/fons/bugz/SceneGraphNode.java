@@ -11,8 +11,6 @@ import java.util.ArrayList;
 
 public class SceneGraphNode
 {
-    private boolean assetsProcessed = false;
-
     private SceneGraphNode parent;
     private ArrayList<SceneGraphNode> children;
 
@@ -46,18 +44,18 @@ public class SceneGraphNode
     {
         onAssetsLoaded();
         for(SceneGraphNode child : children) child._onAssetsLoaded();
-        assetsProcessed = true;
     }
 
     public final void _update(float deltaTime)
     {
-        if(!assetsProcessed) //Keep track of the assets being load, on every _update
+        boolean assetsLoaded = assetsLoaded();
+        if(!assetsLoaded) //Keep track of the assets being load, on every _update
         {
             if (!getAssetsManager().update()) return; //If it's still loading...
-            else if (!assetsProcessed)  _onAssetsLoaded(); //Assets have just loaded, must be processed
+            else if (!assetsLoaded)  _onAssetsLoaded(); //Assets have just loaded, must be processed
         }
 
-        if(assetsProcessed)
+        if(assetsLoaded)
         {
             //Game.AndroidResolver.log("_update " + this);
             update(deltaTime);
@@ -67,7 +65,7 @@ public class SceneGraphNode
 
     public final void _render(ModelBatch modelBatch, Environment environment)
     {
-        if(!assetsProcessed) return;
+        if(!assetsLoaded()) return;
 
         prerender(modelBatch, environment);
         for(SceneGraphNode child : children) child._render(modelBatch, environment);
@@ -176,6 +174,6 @@ public class SceneGraphNode
             return parent == null ? null : parent.getAssetsManager();
         }
 
-        protected boolean assetsLoaded() { return assetsProcessed; }
+        protected boolean assetsLoaded() { return parent.assetsLoaded(); }
     /////////////////////////////////////////////////////////////////////////////
 }

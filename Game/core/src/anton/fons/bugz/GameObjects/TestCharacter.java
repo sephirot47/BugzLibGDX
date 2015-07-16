@@ -17,7 +17,7 @@ public class TestCharacter extends GameObject
 
     public TestCharacter()
     {
-        super("models/characters/person.g3dj");
+        super("models/characters/person.g3db");
     }
 
     @Override

@@ -25,6 +25,8 @@ import anton.fons.bugz.SceneGraphNode;
 
 public class Scene extends SceneGraphNode
 {
+    private boolean assetsLoaded = false;
+
     private AssetManager assetsManager;
 
     private ModelBatch modelBatch;
@@ -59,6 +61,12 @@ public class Scene extends SceneGraphNode
 
         viewport = new ExtendViewport(100.0f, 100.0f, cam);
         //viewport.apply();
+    }
+
+    protected void onAssetsLoaded()
+    {
+        super.onAssetsLoaded();
+        assetsLoaded = true;
     }
 
     //Called from Game, in order to start all the rendering (needed because Game doesn't have the)
@@ -111,6 +119,9 @@ public class Scene extends SceneGraphNode
     public void setEnvironment(Environment env) { environment = env; }
     public void setViewport(Viewport viewport) { this.viewport = viewport; }
     public void setCamera(Camera camera) { cam = camera; }
+
+    @Override
+    public boolean assetsLoaded() { return assetsLoaded; }
 
     @Override
     public SceneGraphNode getParent() { return this; }
