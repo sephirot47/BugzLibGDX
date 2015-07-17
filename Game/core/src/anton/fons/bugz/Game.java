@@ -30,7 +30,7 @@ public class Game extends ApplicationAdapter
 		walkingScene = new WalkingScene();
 		boardScene = new BoardScene();
 
-		changeScene(boardScene);
+		changeScene(walkingScene);
 		created = true;
 	}
 

@@ -11,6 +11,7 @@ public class TestCharacter extends GameObject
     private static final float TimeWaitBetweenSteps = 2.0f;
     float timeSinceLastStep = 0.0f;
     public boolean walking = false;
+    private boolean created = false;
 
     private static final String IdleAnimationId = "6000_dummy_idle";
     private static final String WalkAnimationId = "6000_dummy_walk";
@@ -20,25 +21,14 @@ public class TestCharacter extends GameObject
         super("models/characters/person.g3db");
     }
 
+
     @Override
     protected void create()
     {
         super.create();
         setScale(2.0f);
-    }
-
-    @Override
-    protected void onAssetsLoaded()
-    {
-        super.onAssetsLoaded();
+        created = true;
         playLoop(IdleAnimationId);
-    }
-
-
-    @Override
-    protected void prerender(ModelBatch modelBatch, Environment environment)
-    {
-        super.prerender(modelBatch, environment);
     }
 
     @Override
@@ -56,7 +46,7 @@ public class TestCharacter extends GameObject
 
     public void onStepDone()
     {
-        if(!assetsLoaded()) return;
+        if(!created) return;
 
         timeSinceLastStep = 0.0f;
         walking = true;

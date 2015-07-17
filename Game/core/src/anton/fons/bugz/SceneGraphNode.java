@@ -26,49 +26,22 @@ public class SceneGraphNode
         scale = new Vector3(1f, 1f, 1f);
     }
 
-    public final void _create()
+    public void _create()
     {
         create();
         for(SceneGraphNode child : children) child._create();
-
-        _loadAssets(); //LOAD THE ASSETS!
     }
 
-    public final void _loadAssets()
+    public void _update(float deltaTime)
     {
-        loadAssets();
-        //No need to call _loadAssets on childs, _create does it
-    }
-
-    public final void _onAssetsLoaded()
-    {
-        onAssetsLoaded();
-        for(SceneGraphNode child : children) child._onAssetsLoaded();
-    }
-
-    public final void _update(float deltaTime)
-    {
-        boolean assetsLoaded = assetsLoaded();
-        if(!assetsLoaded) //Keep track of the assets being load, on every _update
-        {
-            if (!getAssetsManager().update()) return; //If it's still loading...
-            else if (!assetsLoaded)  _onAssetsLoaded(); //Assets have just loaded, must be processed
-        }
-
-        if(assetsLoaded)
-        {
-            //Game.AndroidResolver.log("_update " + this);
-            update(deltaTime);
-            for (SceneGraphNode child : children) child._update(deltaTime);
-        }
+        update(deltaTime);
+        for (SceneGraphNode child : children) child._update(deltaTime);
     }
 
     public final void _render(ModelBatch modelBatch, Environment environment)
     {
-        if(!assetsLoaded()) return;
-
         prerender(modelBatch, environment);
-        for(SceneGraphNode child : children) child._render(modelBatch, environment);
+        for (SceneGraphNode child : children) child._render(modelBatch, environment);
         postrender(modelBatch, environment);
     }
 
@@ -92,8 +65,6 @@ public class SceneGraphNode
 
     public final void _resize(int width, int height)
     {
-        if(!assetsLoaded()) return;
-
         for(SceneGraphNode child : children) child._resize(width, height);
         resize(width, height);
     }
@@ -101,8 +72,6 @@ public class SceneGraphNode
 
     //Overridable functions /////////////////////////////////////////////////////
         protected void create() { }
-        protected void loadAssets() {}
-        protected void onAssetsLoaded() {}
         protected void update(float deltaTime) {}
         protected void pause() {}
         protected void resume() {}
@@ -169,7 +138,7 @@ public class SceneGraphNode
             Matrix4 local = getLocalTransform();
             if (parent == null) return local;
             Matrix4 global = parent.getGlobalTransform();
-            Matrix4.mul(global.val,local.val);
+            Matrix4.mul(global.val, local.val);
             return global;
         }
 
@@ -188,7 +157,5 @@ public class SceneGraphNode
         {
             return parent == null ? null : parent.getAssetsManager();
         }
-
-        protected boolean assetsLoaded() { return parent.assetsLoaded(); }
     /////////////////////////////////////////////////////////////////////////////
 }

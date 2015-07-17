@@ -14,6 +14,7 @@ public class TestPlanet extends GameObject
     @Override
     public void create()
     {
+        super.create();
         setPosition(0, -5.0f, 0);
         setRotation(1.0f, 0.0f, 0.0f, 90.0f);
         rotate(0.0f, 0.0f, 1.0f, 90.0f);
@@ -23,12 +24,8 @@ public class TestPlanet extends GameObject
     @Override
     public void update(float deltaTime)
     {
+        super.update(deltaTime);
         if(character.walking)
             rotate(0.0f, 1.0f, 0.0f, rotSpeed * deltaTime);
-    }
-
-    public void onStepDone()
-    {
-        if(!assetsLoaded()) return;
     }
 }

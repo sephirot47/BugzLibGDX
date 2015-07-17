@@ -1,6 +1,7 @@
 package anton.fons.bugz.Scenes;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 
 import anton.fons.bugz.BoardCanvas;
@@ -30,6 +31,15 @@ public class BoardScene extends Scene
         canvas = new BoardCanvas();
         setCanvas(canvas); //We set the canvas
     }
+
+    @Override
+    protected void loadAssets()
+    {
+        //load everything we need
+        getAssetsManager().load(board.getModelFilepath(), Model.class);
+        getAssetsManager().load(Board.PointerModelFilepath, Model.class);
+    }
+
 
     @Override
     protected void update(float deltaTime)

@@ -22,9 +22,9 @@ public class Canvas extends SceneGraphNode
     private static final String FontFilepath = "fonts/Ubuntu.ttf";
 
     @Override
-    protected void loadAssets()
+    protected void create()
     {
-        super.loadAssets();
+        super.create();
 
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);

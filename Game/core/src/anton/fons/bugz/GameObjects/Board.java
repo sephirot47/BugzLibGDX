@@ -5,12 +5,13 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 public class Board extends GameObject
 {
-    GameObject pointer;
+    private GameObject pointer;
+    public final static String PointerModelFilepath = "models/board/pointer/pointer.g3db";
 
     public Board()
     {
         super("models/board/board.g3dj");
-        pointer = new GameObject("models/board/pointer/pointer.g3db");
+        pointer = new GameObject(PointerModelFilepath);
         addChild(pointer);
     }
 
@@ -26,6 +27,6 @@ public class Board extends GameObject
     {
        super.update(deltaTime);
        rotate(1f, 1f, 0f, 1);
-       pointer.setPosition(0.0f, 100.0f*(float)Math.sin(TimeUtils.millis()*0.002),0.0f);
+        pointer.setPosition(0.0f, 100.0f * (float) Math.sin(TimeUtils.millis()*0.002),0.0f);
     }
 }

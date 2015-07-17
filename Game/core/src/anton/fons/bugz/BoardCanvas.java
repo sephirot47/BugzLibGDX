@@ -11,9 +11,9 @@ public class BoardCanvas extends Canvas
     private TextButton btnUp, btnDown, btnLeft, btnRight;
 
     @Override
-    protected void loadAssets()
+    protected void create()
     {
-        super.loadAssets();
+        super.create();
 
         TextButtonStyle style = new TextButtonStyle();
         style.font = getCanvasFont();

@@ -30,9 +30,10 @@ import anton.fons.bugz.Game;
 import anton.fons.bugz.GameObjects.GameObject;
 import anton.fons.bugz.SceneGraphNode;
 
-public class Scene extends SceneGraphNode
+public abstract class Scene extends SceneGraphNode
 {
     private AssetManager assetsManager;
+    private boolean assetsLoaded = false;
 
     private ModelBatch modelBatch;
 
@@ -44,16 +45,12 @@ public class Scene extends SceneGraphNode
     public Scene()
     {
         super();
-
-        //A scene is created by himself
-        //A gameObject (a diferencia), is created when it's added to a scene, and disposed when removed
         _create();
     }
 
     @Override
-    protected void create()
+    public void _create()
     {
-        super.create();
         assetsManager = new AssetManager();
 
         modelBatch = new ModelBatch();
@@ -71,21 +68,48 @@ public class Scene extends SceneGraphNode
 
         canvas = new Canvas(); //CREATE THE CANVAS AND ADD IT AS A CHILD :)
         addChild(canvas);
+
+        create();
+
+        loadAssets(); //Load all the assets
     }
 
-    protected void onAssetsLoaded() {
-        super.onAssetsLoaded();
+    protected abstract void loadAssets();
+
+    protected void onAssetsLoaded()
+    {
+        for(SceneGraphNode child : getChildren()) child._create();
     }
+
+    @Override
+    public void _update(float deltaTime)
+    {
+        if (!getAssetsManager().update()) return;
+        else if (!assetsLoaded)
+        {
+            onAssetsLoaded(); //Called only once
+            assetsLoaded = true;
+        }
+
+        if(assetsLoaded)
+        {
+            update(deltaTime);
+            for (SceneGraphNode child : getChildren()) child._update(deltaTime);
+        }
+    }
+
 
     //Called from Game, in order to start all the rendering (needed because Game doesn't have the)
     //modelBatch or the environment
     public final void _sceneRender()
     {
+        if(!assetsLoaded) return;
         _render(modelBatch, environment);
     }
 
     @Override
-    protected void prerender(ModelBatch modelBatch, Environment environment) {
+    protected void prerender(ModelBatch modelBatch, Environment environment)
+    {
         super.prerender(modelBatch, environment);
         //Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
@@ -95,7 +119,8 @@ public class Scene extends SceneGraphNode
     }
 
     @Override
-    protected void postrender(ModelBatch modelBatch, Environment environment) {
+    protected void postrender(ModelBatch modelBatch, Environment environment)
+    {
         super.postrender(modelBatch, environment);
 
         // And once all the childs are rendered, end the modelBatch
@@ -131,8 +156,6 @@ public class Scene extends SceneGraphNode
         addChild(canvas);
     }
 
-    @Override
-    public boolean assetsLoaded() { return assetsManager.update(); }
 
     @Override
     public SceneGraphNode getParent() { return this; }

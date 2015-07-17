@@ -1,6 +1,7 @@
 package anton.fons.bugz.GameObjects;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
@@ -24,17 +25,10 @@ public class GameObject extends SceneGraphNode implements AnimationController.An
     }
 
     @Override
-    protected void loadAssets()
+    protected void create()
     {
-        super.loadAssets();
+        super.create();
 
-        getAssetsManager().load(modelFilepath, Model.class); //load everything we need
-    }
-
-    @Override
-    protected void onAssetsLoaded()
-    {
-        super.onAssetsLoaded();
         Model model = getAssetsManager().get(modelFilepath, Model.class);
         modelInstance = new ModelInstance(model); //get the model instance
         animationController = new AnimationController(modelInstance); //set the animController
@@ -105,4 +99,6 @@ public class GameObject extends SceneGraphNode implements AnimationController.An
             modelInstance.transform = getGlobalTransform();
         }
     /////////////////////////////////////////////////////////////////////////////
+
+    public String getModelFilepath() { return modelFilepath; }
 }
