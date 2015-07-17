@@ -47,6 +47,7 @@ public abstract class Scene extends SceneGraphNode
 
         create();
 
+        Game.getResourceManager().addScene(this);
         loadAssets(); //Load all the assets
     }
 

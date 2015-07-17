@@ -25,8 +25,11 @@ public class ResourceManager
 
     public <T> void load(String path, Class<T> resourceClass, Scene scene)
     {
-        if(map.get(scene) == null)
-            map.put(scene, new ArrayList<String>());
+
+        if(map.get(scene) == null) {
+            Game.AndroidResolver.log("You cannot load assets outside loadAssets() or pass another scene as argument");
+            return;
+        }
 
         map.get(scene).add(path);
         assetManager.load(path, resourceClass);
@@ -39,12 +42,18 @@ public class ResourceManager
 
     public boolean sceneLoaded(Scene scene)
     {
-        if(!map.containsKey(scene)) return true;
+        if(!map.containsKey(scene)) return false;
 
         for(String id : map.get(scene))
         {
             if( !assetManager.isLoaded(id) ) return false;
         }
         return true;
+    }
+
+    public void addScene(Scene scene)
+    {
+        if(!map.containsKey(scene))
+            map.put(scene, new ArrayList<String>());
     }
 }

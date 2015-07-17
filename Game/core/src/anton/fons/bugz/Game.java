@@ -62,28 +62,33 @@ public class Game extends ApplicationAdapter
 			}
 		}
 
-		if(System.currentTimeMillis() - mec >= 3000 && !changed1)
+		if(System.currentTimeMillis() - mec >= 10000 && !changed1)
 		{
+			mec = System.currentTimeMillis();
 			changed1 = true;
 			loadAndChangeScene(walkingScene);
 		}
 		else if (System.currentTimeMillis() - mec >= 10000 && !changed2)
 		{
+			mec = System.currentTimeMillis();
 			changed2 = true;
-			loadAndChangeScene(boardScene);
+			loadAndChangeScene(walkingScene);
 		}
-		else if (System.currentTimeMillis() - mec >= 12000 && !changed3)
+		else if (System.currentTimeMillis() - mec >= 10000 && !changed3)
 		{
+			mec = System.currentTimeMillis();
 			changed3 = true;
 			loadAndChangeScene(walkingScene);
 		}
-		else if (System.currentTimeMillis() - mec >= 14000 && !changed4)
+		else if (System.currentTimeMillis() - mec >= 10000 && !changed4)
 		{
+			mec = System.currentTimeMillis();
 			changed4 = true;
-			loadAndChangeScene(boardScene);
+			loadAndChangeScene(walkingScene);
 		}
-		else if (System.currentTimeMillis() - mec >= 16000 && !changed5)
+		else if (System.currentTimeMillis() - mec >= 10000 && !changed5)
 		{
+			mec = System.currentTimeMillis();
 			changed5 = true;
 			loadAndChangeScene(walkingScene);
 		}
@@ -116,14 +121,20 @@ public class Game extends ApplicationAdapter
 	public Scene getCurrentScene() { return currentScene; }
 
 	//Puts the newScene in the queue. Meanwhile, the loadingScene is shown
-	public void loadAndChangeScene(anton.fons.bugz.SceneGraph.Scene newScene)
+	public void loadAndChangeScene(Scene newScene)
 	{
 		if(pendingScene != null) return;
 
-		changeScene(loadingScene);
+		if (resourceManager.sceneLoaded(newScene)) {
+            changeScene(newScene);
+            newScene._create(); //Has to be called after because changeScene dispose current scene (and can be the same as newScene)
+		} else {
+			changeScene(loadingScene);
+            loadingScene._create();
 
-		pendingScene = newScene;
-		pendingScene._create(); //Start loading its assets
+			pendingScene = newScene;
+			pendingScene._create(); //Start loading its assets
+		}
 	}
 
 	//REALLY Changes the scene to newScene
@@ -131,11 +142,6 @@ public class Game extends ApplicationAdapter
 	{
 		if(currentScene != null) currentScene._dispose();
 		currentScene = newScene;
-
-		//Nomes s'ha de crear la escena si es la loadingScene. Si no, no cal, ja que
-		//ja ha estat creada al loadAndChangeScene!!! (pendingScene._create())
-		if(currentScene == loadingScene)
-			currentScene._create();
 	}
 
 	public static ResourceManager getResourceManager()
