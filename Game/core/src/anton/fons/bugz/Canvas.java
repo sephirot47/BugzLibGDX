@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.*;
 
-public class Canvas extends SceneGraphNode
+public abstract class Canvas extends SceneGraphNode
 {
     private Stage stage;
     protected BitmapFont font30; //font of size 30

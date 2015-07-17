@@ -5,9 +5,8 @@ import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 
 import anton.fons.bugz.BoardCanvas;
+import anton.fons.bugz.Game;
 import anton.fons.bugz.GameObjects.Board;
-import anton.fons.bugz.GameObjects.TestCharacter;
-import anton.fons.bugz.GameObjects.TestPlanet;
 
 public class BoardScene extends Scene
 {
@@ -36,8 +35,8 @@ public class BoardScene extends Scene
     protected void loadAssets()
     {
         //load everything we need
-        getAssetsManager().load(board.getModelFilepath(), Model.class);
-        getAssetsManager().load(Board.PointerModelFilepath, Model.class);
+        Game.getResourceManager().load(board.getModelFilepath(), Model.class, this);
+        Game.getResourceManager().load(Board.PointerModelFilepath, Model.class, this);
     }
 
 

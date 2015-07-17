@@ -1,7 +1,6 @@
 package anton.fons.bugz.GameObjects;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
@@ -10,7 +9,6 @@ import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 
 import anton.fons.bugz.Game;
 import anton.fons.bugz.SceneGraphNode;
-import anton.fons.bugz.Scenes.Scene;
 
 public class GameObject extends SceneGraphNode implements AnimationController.AnimationListener
 {
@@ -29,7 +27,7 @@ public class GameObject extends SceneGraphNode implements AnimationController.An
     {
         super.create();
 
-        Model model = getAssetsManager().get(modelFilepath, Model.class);
+        Model model = Game.getResourceManager().get(modelFilepath, Model.class);
         modelInstance = new ModelInstance(model); //get the model instance
         animationController = new AnimationController(modelInstance); //set the animController
         animationController.allowSameAnimation = false;

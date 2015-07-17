@@ -2,11 +2,7 @@ package anton.fons.bugz.Scenes;
 
 
 import com.badlogic.gdx.graphics.g3d.Model;
-import com.badlogic.gdx.math.Vector3;
 
-import java.util.ArrayList;
-
-import anton.fons.bugz.BoardCanvas;
 import anton.fons.bugz.Game;
 import anton.fons.bugz.GameObjects.*;
 
@@ -23,7 +19,7 @@ public class WalkingScene extends Scene
         testCharacter = new TestCharacter();
         addChild(testCharacter);
 
-        testCharacter.setPosition(0.2f,0.2f,0.2f);
+        testCharacter.setPosition(0.2f, 0.2f, 0.2f);
 
         testPlanet = new TestPlanet(testCharacter);
         addChild(testPlanet);
@@ -33,8 +29,8 @@ public class WalkingScene extends Scene
     protected void loadAssets()
     {
         //load everything we need
-        getAssetsManager().load(testCharacter.getModelFilepath(), Model.class);
-        getAssetsManager().load(testPlanet.getModelFilepath(), Model.class);
+        Game.getResourceManager().load(testCharacter.getModelFilepath(), Model.class, this);
+        Game.getResourceManager().load(testPlanet.getModelFilepath(), Model.class, this);
     }
 
     public void onStepDone()

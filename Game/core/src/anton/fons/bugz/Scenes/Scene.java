@@ -1,43 +1,28 @@
 package anton.fons.bugz.Scenes;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.*;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
-import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton.*;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import anton.fons.bugz.Canvas;
 import anton.fons.bugz.Game;
-import anton.fons.bugz.GameObjects.GameObject;
+import anton.fons.bugz.ResourceManager;
 import anton.fons.bugz.SceneGraphNode;
 
 public abstract class Scene extends SceneGraphNode
 {
-    private AssetManager assetsManager;
-    private boolean assetsLoaded = false;
+    public boolean assetsLoaded = false;
 
     private ModelBatch modelBatch;
 
-    private Canvas canvas;
+    private Canvas canvas = null;
 
     private Environment environment;
     private Camera cam;
@@ -50,7 +35,7 @@ public abstract class Scene extends SceneGraphNode
     @Override
     public void _create()
     {
-        assetsManager = new AssetManager();
+        assetsLoaded = false;
 
         modelBatch = new ModelBatch();
 
@@ -64,9 +49,6 @@ public abstract class Scene extends SceneGraphNode
         cam.near = 1f;
         cam.far = 300f;
         cam.update();
-
-        canvas = new Canvas(); //CREATE THE CANVAS AND ADD IT AS A CHILD :)
-        addChild(canvas);
 
         create();
 
@@ -83,7 +65,7 @@ public abstract class Scene extends SceneGraphNode
     @Override
     public void _update(float deltaTime)
     {
-        if (!getAssetsManager().update()) return;
+        if (!Game.getResourceManager().sceneLoaded(this)) return;
         else if (!assetsLoaded)
         {
             onAssetsLoaded(); //Called only once
@@ -102,8 +84,10 @@ public abstract class Scene extends SceneGraphNode
     //modelBatch or the environment
     public final void _sceneRender()
     {
-        if(!assetsLoaded) return;
-        _render(modelBatch, environment);
+        if(Game.getResourceManager().sceneLoaded(this))
+        {
+            _render(modelBatch, environment);
+        }
     }
 
     @Override
@@ -130,7 +114,14 @@ public abstract class Scene extends SceneGraphNode
     {
         super.dispose();
         modelBatch.dispose();
-        assetsManager.dispose();
+
+        ArrayList<SceneGraphNode> children = getChildren();
+        while(children.size() > 0)
+        {
+            SceneGraphNode child = children.get(0);
+            child._dispose();
+            removeChild(child);
+        }
     }
 
     @Override
@@ -139,18 +130,12 @@ public abstract class Scene extends SceneGraphNode
         super.resize(width, height);
     }
 
-    @Override
-    public AssetManager getAssetsManager()
-    {
-        return assetsManager;
-    }
-
     public void setEnvironment(Environment env) { environment = env; }
     //public void setViewport(Viewport viewport) { this.viewport = viewport; }
     public void setCamera(Camera camera) { cam = camera; }
     public void setCanvas(Canvas canvas)
     {
-        removeChild(canvas);
+        if(canvas != null) removeChild(canvas);
         this.canvas = canvas;
         addChild(canvas);
     }
