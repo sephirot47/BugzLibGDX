@@ -45,7 +45,6 @@ public abstract class Scene extends SceneGraphNode
     public Scene()
     {
         super();
-        _create();
     }
 
     @Override

@@ -23,7 +23,7 @@ public class BoardScene extends Scene
 
         board = new Board();
         addChild(board);
-        board.setPosition(1.0f,0.0f,0.0f);
+        board.setPosition(1.0f, 0.0f, 0.0f);
 
         camController = new CameraInputController(getCamera());
         Gdx.input.setInputProcessor(camController);

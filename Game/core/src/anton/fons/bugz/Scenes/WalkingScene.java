@@ -12,10 +12,8 @@ import anton.fons.bugz.GameObjects.*;
 
 public class WalkingScene extends Scene
 {
-    private TestCharacter testCharacter;//, testChild;
+    private TestCharacter testCharacter;
     private TestPlanet testPlanet;
-
-    private BoardCanvas canvas;
 
     @Override
     protected void create()
@@ -27,16 +25,8 @@ public class WalkingScene extends Scene
 
         testCharacter.setPosition(0.2f,0.2f,0.2f);
 
-        //testChild = new TestCharacter();
-        //testCharacter.addChild(testChild);
-
-        //testChild.setPosition(0.6f,0.6f,0.6f);
-
         testPlanet = new TestPlanet(testCharacter);
         addChild(testPlanet);
-
-        canvas = new BoardCanvas();
-        setCanvas(canvas); //We set the canvas
     }
 
     @Override
@@ -56,6 +46,5 @@ public class WalkingScene extends Scene
     public void update(float deltaTime)
     {
         super.update(deltaTime);
-        testCharacter.rotate(1.0f,0.0f,0.0f,5.0f);
     }
 }
