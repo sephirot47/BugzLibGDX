@@ -4,8 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 
-import anton.fons.bugz.BoardCanvas;
+import anton.fons.bugz.Canvases.BoardCanvas;
 import anton.fons.bugz.Game;
+import anton.fons.bugz.SceneGraph.Scene;
 import anton.fons.bugz.GameObjects.Board;
 
 public class BoardScene extends Scene

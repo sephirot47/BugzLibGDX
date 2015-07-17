@@ -5,7 +5,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import anton.fons.bugz.Scenes.Scene;
+import anton.fons.bugz.SceneGraph.Scene;
 
 public class ResourceManager
 {

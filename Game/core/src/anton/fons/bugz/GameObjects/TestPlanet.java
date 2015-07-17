@@ -1,5 +1,7 @@
 package anton.fons.bugz.GameObjects;
 
+import anton.fons.bugz.SceneGraph.GameObject;
+
 public class TestPlanet extends GameObject
 {
     private float rotSpeed = 10.0f;

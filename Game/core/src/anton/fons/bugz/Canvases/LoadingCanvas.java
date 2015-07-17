@@ -1,7 +1,8 @@
-package anton.fons.bugz;
+package anton.fons.bugz.Canvases;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+
+import anton.fons.bugz.SceneGraph.Canvas;
 
 public class LoadingCanvas extends Canvas
 {

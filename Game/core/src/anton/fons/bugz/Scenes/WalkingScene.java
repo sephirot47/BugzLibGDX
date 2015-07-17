@@ -4,7 +4,9 @@ package anton.fons.bugz.Scenes;
 import com.badlogic.gdx.graphics.g3d.Model;
 
 import anton.fons.bugz.Game;
-import anton.fons.bugz.GameObjects.*;
+import anton.fons.bugz.GameObjects.TestCharacter;
+import anton.fons.bugz.GameObjects.TestPlanet;
+import anton.fons.bugz.SceneGraph.Scene;
 
 public class WalkingScene extends Scene
 {

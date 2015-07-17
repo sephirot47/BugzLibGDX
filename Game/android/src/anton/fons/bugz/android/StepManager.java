@@ -8,8 +8,6 @@ import android.hardware.SensorManager;
 
 import com.badlogic.gdx.math.Vector3;
 
-import anton.fons.bugz.Game;
-
 public class StepManager implements SensorEventListener
 {
     private static float stepAmountThreshold = 2.5f;

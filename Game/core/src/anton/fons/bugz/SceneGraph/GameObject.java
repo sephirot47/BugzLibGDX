@@ -1,4 +1,4 @@
-package anton.fons.bugz.GameObjects;
+package anton.fons.bugz.SceneGraph;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g3d.Environment;
@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 
 import anton.fons.bugz.Game;
-import anton.fons.bugz.SceneGraphNode;
 
 public class GameObject extends SceneGraphNode implements AnimationController.AnimationListener
 {

@@ -1,8 +1,6 @@
 package anton.fons.bugz.GameObjects;
-import com.badlogic.gdx.graphics.g3d.Environment;
-import com.badlogic.gdx.graphics.g3d.ModelBatch;
 
-import anton.fons.bugz.Game;
+import anton.fons.bugz.SceneGraph.GameObject;
 
 public class TestCharacter extends GameObject
 {

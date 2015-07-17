@@ -1,4 +1,4 @@
-package anton.fons.bugz.Scenes;
+package anton.fons.bugz.SceneGraph;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
@@ -11,10 +11,7 @@ import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 
 import java.util.ArrayList;
 
-import anton.fons.bugz.Canvas;
 import anton.fons.bugz.Game;
-import anton.fons.bugz.ResourceManager;
-import anton.fons.bugz.SceneGraphNode;
 
 public abstract class Scene extends SceneGraphNode
 {

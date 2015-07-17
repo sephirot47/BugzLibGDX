@@ -3,11 +3,10 @@ package anton.fons.bugz;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 
-import anton.fons.bugz.Scenes.*;
-
-import java.util.ArrayList;
-
-import anton.fons.bugz.Scenes.*;
+import anton.fons.bugz.SceneGraph.Scene;
+import anton.fons.bugz.Scenes.BoardScene;
+import anton.fons.bugz.Scenes.LoadingScene;
+import anton.fons.bugz.Scenes.WalkingScene;
 
 public class Game extends ApplicationAdapter
 {
@@ -112,7 +111,7 @@ public class Game extends ApplicationAdapter
 	public Scene getCurrentScene() { return currentScene; }
 
 	//Puts the newScene in the queue. Meanwhile, the loadingScene is shown
-	public void loadAndChangeScene(Scene newScene)
+	public void loadAndChangeScene(anton.fons.bugz.SceneGraph.Scene newScene)
 	{
 		if(pendingScene != null) return;
 
@@ -123,7 +122,7 @@ public class Game extends ApplicationAdapter
 	}
 
 	//REALLY Changes the scene to newScene
-	public void changeScene(Scene newScene)
+	public void changeScene(anton.fons.bugz.SceneGraph.Scene newScene)
 	{
 		if(currentScene != null) currentScene._dispose();
 		currentScene = newScene;

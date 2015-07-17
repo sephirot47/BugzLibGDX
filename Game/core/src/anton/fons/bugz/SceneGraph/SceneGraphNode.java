@@ -1,6 +1,5 @@
-package anton.fons.bugz;
+package anton.fons.bugz.SceneGraph;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.math.Matrix4;

@@ -1,7 +1,7 @@
 package anton.fons.bugz.GameObjects;
 
-import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.utils.TimeUtils;
+import anton.fons.bugz.SceneGraph.GameObject;
 
 public class Board extends GameObject
 {
