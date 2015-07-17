@@ -28,7 +28,7 @@ public class LoadingScene extends Scene
     }
 
     @Override
-    protected void loadAssets()
+    public void loadAssets()
     {
     }
 }

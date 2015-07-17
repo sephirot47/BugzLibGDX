@@ -39,7 +39,7 @@ public class Game extends ApplicationAdapter
 		created = true;
 	}
 
-	boolean changed1 = false, changed2 = false, changed3 = false, changed4 = false;
+	boolean changed1 = false, changed2 = false, changed3 = false, changed4 = false, changed5 = false;
 	long mec = System.currentTimeMillis();
 	@Override
 	public void render ()
@@ -62,25 +62,30 @@ public class Game extends ApplicationAdapter
 			}
 		}
 
-		if(System.currentTimeMillis() - mec >= 7000 && !changed1)
+		if(System.currentTimeMillis() - mec >= 3000 && !changed1)
 		{
 			changed1 = true;
 			loadAndChangeScene(walkingScene);
 		}
-		else if (System.currentTimeMillis() - mec >= 13000 && !changed2)
+		else if (System.currentTimeMillis() - mec >= 10000 && !changed2)
 		{
 			changed2 = true;
 			loadAndChangeScene(boardScene);
 		}
-		else if (System.currentTimeMillis() - mec >= 16000 && !changed3)
+		else if (System.currentTimeMillis() - mec >= 12000 && !changed3)
 		{
 			changed3 = true;
 			loadAndChangeScene(walkingScene);
 		}
-		else if (System.currentTimeMillis() - mec >= 23000 && !changed4)
+		else if (System.currentTimeMillis() - mec >= 14000 && !changed4)
 		{
 			changed4 = true;
 			loadAndChangeScene(boardScene);
+		}
+		else if (System.currentTimeMillis() - mec >= 16000 && !changed5)
+		{
+			changed5 = true;
+			loadAndChangeScene(walkingScene);
 		}
 	}
 
@@ -118,7 +123,7 @@ public class Game extends ApplicationAdapter
 		changeScene(loadingScene);
 
 		pendingScene = newScene;
-		pendingScene._create();
+		pendingScene._create(); //Start loading its assets
 	}
 
 	//REALLY Changes the scene to newScene
@@ -126,7 +131,11 @@ public class Game extends ApplicationAdapter
 	{
 		if(currentScene != null) currentScene._dispose();
 		currentScene = newScene;
-		currentScene._create();
+
+		//Nomes s'ha de crear la escena si es la loadingScene. Si no, no cal, ja que
+		//ja ha estat creada al loadAndChangeScene!!! (pendingScene._create())
+		if(currentScene == loadingScene)
+			currentScene._create();
 	}
 
 	public static ResourceManager getResourceManager()

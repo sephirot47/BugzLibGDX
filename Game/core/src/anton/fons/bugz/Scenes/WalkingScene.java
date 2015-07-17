@@ -28,7 +28,7 @@ public class WalkingScene extends Scene
     }
 
     @Override
-    protected void loadAssets()
+    public void loadAssets()
     {
         //load everything we need
         Game.getResourceManager().load(testCharacter.getModelFilepath(), Model.class, this);

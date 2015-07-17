@@ -87,10 +87,26 @@ public class SceneGraphNode
             child.parent = this;
         }
 
+        public final boolean hasChild(SceneGraphNode child)
+        {
+            return children.contains(child);
+        }
+
         public final void removeChild(SceneGraphNode child)
         {
             children.remove(child);
             child.parent = null;
+        }
+
+        public final void removeAllChildren()
+        {
+            //Remove all children
+            while(children.size() > 0)
+            {
+                SceneGraphNode child = children.get(0);
+                child._dispose();
+                removeChild(child);
+            }
         }
 
         public SceneGraphNode getParent() { return parent; }

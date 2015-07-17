@@ -33,7 +33,7 @@ public class BoardScene extends Scene
     }
 
     @Override
-    protected void loadAssets()
+    public void loadAssets()
     {
         //load everything we need
         Game.getResourceManager().load(board.getModelFilepath(), Model.class, this);

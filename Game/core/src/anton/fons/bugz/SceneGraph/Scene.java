@@ -9,8 +9,6 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 
-import java.util.ArrayList;
-
 import anton.fons.bugz.Game;
 
 public abstract class Scene extends SceneGraphNode
@@ -52,7 +50,7 @@ public abstract class Scene extends SceneGraphNode
         loadAssets(); //Load all the assets
     }
 
-    protected abstract void loadAssets();
+    public abstract void loadAssets();
 
     protected void onAssetsLoaded()
     {
@@ -112,13 +110,7 @@ public abstract class Scene extends SceneGraphNode
         super.dispose();
         modelBatch.dispose();
 
-        ArrayList<SceneGraphNode> children = getChildren();
-        while(children.size() > 0)
-        {
-            SceneGraphNode child = children.get(0);
-            child._dispose();
-            removeChild(child);
-        }
+        removeAllChildren();
     }
 
     @Override
