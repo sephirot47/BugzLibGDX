@@ -39,8 +39,6 @@ public class Game extends ApplicationAdapter
 		created = true;
 	}
 
-	boolean changed1 = false, changed2 = false, changed3 = false, changed4 = false, changed5 = false;
-	long mec = System.currentTimeMillis();
 	@Override
 	public void render ()
 	{
@@ -60,37 +58,6 @@ public class Game extends ApplicationAdapter
 				changeScene(pendingScene);
 				pendingScene = null;
 			}
-		}
-
-		if(System.currentTimeMillis() - mec >= 10000 && !changed1)
-		{
-			mec = System.currentTimeMillis();
-			changed1 = true;
-			loadAndChangeScene(walkingScene);
-		}
-		else if (System.currentTimeMillis() - mec >= 10000 && !changed2)
-		{
-			mec = System.currentTimeMillis();
-			changed2 = true;
-			loadAndChangeScene(walkingScene);
-		}
-		else if (System.currentTimeMillis() - mec >= 10000 && !changed3)
-		{
-			mec = System.currentTimeMillis();
-			changed3 = true;
-			loadAndChangeScene(walkingScene);
-		}
-		else if (System.currentTimeMillis() - mec >= 10000 && !changed4)
-		{
-			mec = System.currentTimeMillis();
-			changed4 = true;
-			loadAndChangeScene(walkingScene);
-		}
-		else if (System.currentTimeMillis() - mec >= 10000 && !changed5)
-		{
-			mec = System.currentTimeMillis();
-			changed5 = true;
-			loadAndChangeScene(walkingScene);
 		}
 	}
 

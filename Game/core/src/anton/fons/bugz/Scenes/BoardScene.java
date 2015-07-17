@@ -1,13 +1,14 @@
 package anton.fons.bugz.Scenes;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 
 import anton.fons.bugz.Canvases.BoardCanvas;
 import anton.fons.bugz.Game;
-import anton.fons.bugz.SceneGraph.Scene;
 import anton.fons.bugz.GameObjects.Board;
+import anton.fons.bugz.GameObjects.BoardPointer;
+import anton.fons.bugz.SceneGraph.Scene;
 
 public class BoardScene extends Scene
 {
@@ -23,13 +24,19 @@ public class BoardScene extends Scene
 
         board = new Board();
         addChild(board);
-        board.setPosition(1.0f, 0.0f, 0.0f);
-
-        camController = new CameraInputController(getCamera());
-        Gdx.input.setInputProcessor(camController);
+        board.setPosition(0.0f, 0.0f, 0.0f);
 
         canvas = new BoardCanvas();
         setCanvas(canvas); //We set the canvas
+
+        //Set camera
+        Camera cam = getCamera();
+        cam.position.x = 0f;
+        cam.position.y = 4f;
+        cam.position.z = 5.5f;
+
+        cam.lookAt( 0f, 0f, 0f );
+        cam.update();
     }
 
     @Override
@@ -37,7 +44,7 @@ public class BoardScene extends Scene
     {
         //load everything we need
         Game.getResourceManager().load(board.getModelFilepath(), Model.class, this);
-        Game.getResourceManager().load(Board.PointerModelFilepath, Model.class, this);
+        Game.getResourceManager().load(BoardPointer.ModelFilepath, Model.class, this);
     }
 
 
@@ -45,6 +52,5 @@ public class BoardScene extends Scene
     protected void update(float deltaTime)
     {
         super.update(deltaTime);
-        camController.update();
     }
 }
