@@ -12,8 +12,9 @@ public class AndroidLauncher extends AndroidApplication
 {
 	public static Activity activity;
 
+	private ConnectionManager connectionManager;
 	private StepManager stepManager;
-	private AndroidResolver androidResolver;
+	public static AndroidResolver androidResolver;
 
 	public static Game game;
 
@@ -24,9 +25,10 @@ public class AndroidLauncher extends AndroidApplication
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 
 		activity = this;
-
-		stepManager = new StepManager();
 		androidResolver = new AndroidResolver();
+
+		connectionManager = new ConnectionManager();
+		stepManager = new StepManager();
 
 		game = new Game(androidResolver);
 		initialize(game, config);
@@ -37,6 +39,7 @@ public class AndroidLauncher extends AndroidApplication
 	{
 		super.onResume();
 		stepManager.onResume();
+		connectionManager.onResume();
 	}
 
 	@Override
@@ -44,5 +47,6 @@ public class AndroidLauncher extends AndroidApplication
 	{
 		super.onPause();
 		stepManager.onPause();
+		connectionManager.onPause();
 	}
 }
