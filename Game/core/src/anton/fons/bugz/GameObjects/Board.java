@@ -1,12 +1,14 @@
 package anton.fons.bugz.GameObjects;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 
 import anton.fons.bugz.SceneGraph.GameObject;
 
 public class Board extends GameObject
 {
     private BoardPointer pointer;
+    private BoardGroundMark groundMark;
 
     public final static int BoardWidthInTiles = 8; //In tiles
     public final static int BoardHeightInTiles = 8; //In tiles
@@ -14,16 +16,26 @@ public class Board extends GameObject
     public final static float BoardWidth = BoardWidthInTiles * TileSize;
     public final static float BoardHeight = BoardHeightInTiles * TileSize;
 
-    private final Vector2 pointerTilePosition;
+    private Vector2 pointerTilePosition;
 
     public Board()
     {
         super("models/board/board.g3dj");
 
-        pointerTilePosition = new Vector2(3,3);
+        pointerTilePosition = new Vector2(7,7);
 
         pointer = new BoardPointer();
+        groundMark = new BoardGroundMark();
+
         addChild(pointer);
+        addChild(groundMark);
+    }
+
+    public static Vector3 getPositionFromTile( Vector2 tilePosition )
+    {
+        float x = tilePosition.x * Board.TileSize - Board.BoardWidth / 2f + Board.TileSize / 2f;
+        float z = tilePosition.y * Board.TileSize - Board.BoardHeight / 2f + Board.TileSize / 2f;
+        return new Vector3(x, 0f, z);
     }
 
     @Override
@@ -38,5 +50,16 @@ public class Board extends GameObject
     {
         super.update(deltaTime);
         pointer.updatePointerPosition(pointerTilePosition);
+        groundMark.updateMarkPosition(pointerTilePosition);
+    }
+
+    public void translatePointerTilePosition(int x, int y)
+    {
+        pointerTilePosition.x += x;
+        pointerTilePosition.y += y;
+        pointerTilePosition.x = Math.max(pointerTilePosition.x, 0);
+        pointerTilePosition.x = Math.min(pointerTilePosition.x, BoardWidthInTiles - 1);
+        pointerTilePosition.y = Math.max(pointerTilePosition.y, 0);
+        pointerTilePosition.y = Math.min(pointerTilePosition.y, BoardHeightInTiles - 1);
     }
 }

@@ -8,7 +8,7 @@ import anton.fons.bugz.SceneGraph.GameObject;
 public class BoardPointer extends GameObject
 {
     public static final String ModelFilepath = "models/board/pointer/pointer.g3db";
-    private final static float PointerHeight = 20f;
+    private final static float PointerHeight = 30f;
     private final static float WaveAmount = 6f, WaveMovSpeed = 5f;
 
     private float time = 0.0f;
@@ -27,9 +27,8 @@ public class BoardPointer extends GameObject
 
     public void updatePointerPosition(Vector2 tilePosition)
     {
-        float x = tilePosition.x * Board.TileSize - Board.BoardWidth / 2f + Board.TileSize / 2f;
-        float z = tilePosition.y * Board.TileSize - Board.BoardHeight / 2f + Board.TileSize / 2f;
-        setPosition(x, PointerHeight, z);
+        Vector3 position = Board.getPositionFromTile(tilePosition);
+        setPosition(position.x, PointerHeight, position.z);
     }
 
     @Override

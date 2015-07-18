@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import anton.fons.bugz.Canvases.BoardCanvas;
 import anton.fons.bugz.Game;
 import anton.fons.bugz.GameObjects.Board;
+import anton.fons.bugz.GameObjects.BoardGroundMark;
 import anton.fons.bugz.GameObjects.BoardPointer;
 import anton.fons.bugz.SceneGraph.Scene;
 
@@ -26,7 +27,7 @@ public class BoardScene extends Scene
         addChild(board);
         board.setPosition(0.0f, 0.0f, 0.0f);
 
-        canvas = new BoardCanvas();
+        canvas = new BoardCanvas(board);
         setCanvas(canvas); //We set the canvas
 
         //Set camera
@@ -45,6 +46,7 @@ public class BoardScene extends Scene
         //load everything we need
         Game.getResourceManager().load(board.getModelFilepath(), Model.class, this);
         Game.getResourceManager().load(BoardPointer.ModelFilepath, Model.class, this);
+        Game.getResourceManager().load(BoardGroundMark.ModelFilepath, Model.class, this);
     }
 
 
