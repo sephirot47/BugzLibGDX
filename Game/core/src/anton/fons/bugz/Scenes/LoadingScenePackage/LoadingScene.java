@@ -1,6 +1,5 @@
-package anton.fons.bugz.Scenes;
+package anton.fons.bugz.Scenes.LoadingScenePackage;
 
-import anton.fons.bugz.Canvases.LoadingCanvas;
 import anton.fons.bugz.SceneGraph.Scene;
 
 public class LoadingScene extends Scene

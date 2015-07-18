@@ -1,13 +1,13 @@
-package anton.fons.bugz.GameObjects;
+package anton.fons.bugz.Scenes.WalkingScenePackage;
 
 import anton.fons.bugz.SceneGraph.GameObject;
 
-public class TestPlanet extends GameObject
+public class Planet extends GameObject
 {
     private float rotSpeed = 10.0f;
-    private TestCharacter character;
+    private WalkingBug character;
 
-    public TestPlanet(TestCharacter character)
+    public Planet(WalkingBug character)
     {
         super("models/planets/planet0/planet0.g3dj");
         this.character = character;

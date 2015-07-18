@@ -1,8 +1,8 @@
-package anton.fons.bugz.GameObjects;
+package anton.fons.bugz.Scenes.WalkingScenePackage;
 
 import anton.fons.bugz.SceneGraph.GameObject;
 
-public class TestCharacter extends GameObject
+public class WalkingBug extends GameObject
 {
 
     /**It's the time that the user has to make another step before the character goes idle**/
@@ -14,7 +14,7 @@ public class TestCharacter extends GameObject
     private static final String IdleAnimationId = "6000_dummy_idle";
     private static final String WalkAnimationId = "6000_dummy_walk";
 
-    public TestCharacter()
+    public WalkingBug()
     {
         super("models/characters/person.g3db");
     }

@@ -1,14 +1,10 @@
-package anton.fons.bugz.Scenes;
+package anton.fons.bugz.Scenes.BoardScenePackage;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 
-import anton.fons.bugz.Canvases.BoardCanvas;
 import anton.fons.bugz.Game;
-import anton.fons.bugz.GameObjects.Board;
-import anton.fons.bugz.GameObjects.BoardGroundMark;
-import anton.fons.bugz.GameObjects.BoardPointer;
 import anton.fons.bugz.SceneGraph.Scene;
 
 public class BoardScene extends Scene

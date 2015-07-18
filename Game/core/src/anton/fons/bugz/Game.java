@@ -4,9 +4,9 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 
 import anton.fons.bugz.SceneGraph.Scene;
-import anton.fons.bugz.Scenes.BoardScene;
-import anton.fons.bugz.Scenes.LoadingScene;
-import anton.fons.bugz.Scenes.WalkingScene;
+import anton.fons.bugz.Scenes.BoardScenePackage.BoardScene;
+import anton.fons.bugz.Scenes.LoadingScenePackage.LoadingScene;
+import anton.fons.bugz.Scenes.WalkingScenePackage.WalkingScene;
 
 public class Game extends ApplicationAdapter
 {

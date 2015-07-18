@@ -1,4 +1,4 @@
-package anton.fons.bugz.Canvases;
+package anton.fons.bugz.Scenes.BoardScenePackage;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 
-import anton.fons.bugz.GameObjects.Board;
 import anton.fons.bugz.SceneGraph.Canvas;
 
 public class BoardCanvas extends Canvas

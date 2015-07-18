@@ -1,4 +1,4 @@
-package anton.fons.bugz.GameObjects;
+package anton.fons.bugz.Scenes.BoardScenePackage;
 
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g3d.Environment;
