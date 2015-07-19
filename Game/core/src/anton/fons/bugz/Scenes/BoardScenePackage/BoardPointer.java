@@ -27,8 +27,6 @@ public class BoardPointer extends GameObject
 
     public void updatePointerPosition(Vector2 tilePosition)
     {
-        Vector3 position = Board.getPositionFromTile(tilePosition);
-        setPosition(position.x, PointerHeight, position.z);
     }
 
     @Override
@@ -36,6 +34,9 @@ public class BoardPointer extends GameObject
     {
         super.update(deltaTime);
         time += deltaTime;
+
+        Vector3 position = Board.getWorldTilePosition();
+        setPosition(position.x, PointerHeight, position.z);
 
         //Apply the wave movement
         Vector3 lastPosition = getPosition();

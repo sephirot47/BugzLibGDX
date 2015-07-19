@@ -2,6 +2,7 @@ package anton.fons.bugz.SceneGraph;
 
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
@@ -109,6 +110,10 @@ public class SceneGraphNode
             }
         }
 
+        //You must do it like this until the scene is reached
+        public void addDecal(Decal dec) { if(parent != null) parent.addDecal(dec);}
+        public void removeDecal(Decal dec) { if(parent != null) parent.removeDecal(dec);}
+
         public SceneGraphNode getParent() { return parent; }
         public final ArrayList<SceneGraphNode> getChildren() { return children; }
     ////////////////////////////////////////////////////////////////////////////
@@ -146,6 +151,35 @@ public class SceneGraphNode
         public Vector3 getPosition() { return position; }
         public Vector3 getScale() { return scale; }
         public Quaternion getRotation() { return rotation; }
+
+
+        public Vector3 getGlobalPosition()
+        {
+            Vector3 p = new Vector3();
+            getGlobalTransform().getTranslation(p);
+            return p;/*
+            Vector3 parentPos = parent == null ? position : parent.getGlobalPosition();
+            Vector3 sum = new Vector3(parentPos.x + position.x,
+                    parentPos.y + position.y,
+                    parentPos.z + position.z);
+            return sum;*/
+        }
+
+        public Vector3 getGlobalScale()
+        {
+            Vector3 s = new Vector3();
+            getGlobalTransform().getScale(s);
+            return s;
+        }
+
+        public Quaternion getGlobalRotation()
+        {
+            if(parent == null) return rotation;
+            Quaternion pRot = parent.getGlobalRotation();
+            Quaternion parRot = new Quaternion(pRot.x, pRot.y, pRot.z, pRot.w);
+            Quaternion thisRot = new Quaternion(rotation.x, rotation.y, rotation.z, rotation.w);
+            return parRot.mul(thisRot);
+        }
 
         //TRANSFORM
         public Matrix4 getGlobalTransform()

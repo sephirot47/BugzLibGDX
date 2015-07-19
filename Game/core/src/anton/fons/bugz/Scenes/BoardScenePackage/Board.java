@@ -16,7 +16,7 @@ public class Board extends GameObject
     public final static float BoardWidth = BoardWidthInTiles * TileSize;
     public final static float BoardHeight = BoardHeightInTiles * TileSize;
 
-    private Vector2 pointerTilePosition;
+    private static Vector2 pointerTilePosition;
 
     public Board()
     {
@@ -29,6 +29,16 @@ public class Board extends GameObject
 
         addChild(pointer);
         addChild(groundMark);
+    }
+
+    public static Vector2 getTilePosition()
+    {
+        return pointerTilePosition;
+    }
+
+    public static Vector3 getWorldTilePosition()
+    {
+        return getPositionFromTile(pointerTilePosition);
     }
 
     public static Vector3 getPositionFromTile( Vector2 tilePosition )
@@ -49,8 +59,7 @@ public class Board extends GameObject
     protected void update(float deltaTime)
     {
         super.update(deltaTime);
-        pointer.updatePointerPosition(pointerTilePosition);
-        groundMark.updateMarkPosition(pointerTilePosition);
+        //rotate(1,1,1,1);
     }
 
     public void translatePointerTilePosition(int x, int y)

@@ -7,7 +7,12 @@ import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.decals.CameraGroupStrategy;
+import com.badlogic.gdx.graphics.g3d.decals.Decal;
+import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
+
+import java.util.ArrayList;
 
 import anton.fons.bugz.Game;
 
@@ -16,6 +21,8 @@ public abstract class Scene extends SceneGraphNode
     public boolean assetsLoaded = false;
 
     private ModelBatch modelBatch;
+    private DecalBatch decalBatch;
+    private ArrayList<Decal> decals;
 
     private Canvas canvas = null;
 
@@ -32,8 +39,6 @@ public abstract class Scene extends SceneGraphNode
     {
         assetsLoaded = false;
 
-        modelBatch = new ModelBatch();
-
         environment = new Environment();
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
         environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
@@ -44,6 +49,10 @@ public abstract class Scene extends SceneGraphNode
         cam.near = 1f;
         cam.far = 300f;
         cam.update();
+
+        modelBatch = new ModelBatch();
+        decalBatch = new DecalBatch(new CameraGroupStrategy(cam));
+        decals = new ArrayList<Decal>();
 
         create();
 
@@ -83,6 +92,11 @@ public abstract class Scene extends SceneGraphNode
         if(Game.getResourceManager().sceneLoaded(this))
         {
             _render(modelBatch, environment);
+            for(Decal dec : decals)
+            {
+                decalBatch.add(dec);
+            }
+            decalBatch.flush();
         }
     }
 
@@ -110,6 +124,7 @@ public abstract class Scene extends SceneGraphNode
     {
         super.dispose();
         modelBatch.dispose();
+        decalBatch.dispose();
 
         removeAllChildren();
     }
@@ -118,6 +133,18 @@ public abstract class Scene extends SceneGraphNode
     public void resize(int width, int height)
     {
         super.resize(width, height);
+    }
+
+    @Override
+    public void addDecal(Decal dec)
+    {
+        decals.add(dec);
+    }
+
+    @Override
+    public void removeDecal(Decal dec)
+    {
+        decals.remove(dec);
     }
 
     public void setEnvironment(Environment env) { environment = env; }

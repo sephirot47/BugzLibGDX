@@ -21,7 +21,6 @@ public class BoardScene extends Scene
 
         board = new Board();
         addChild(board);
-        board.setPosition(0.0f, 0.0f, 0.0f);
 
         canvas = new BoardCanvas(board);
         setCanvas(canvas); //We set the canvas
@@ -42,7 +41,7 @@ public class BoardScene extends Scene
         //load everything we need
         Game.getResourceManager().load(board.getModelFilepath(), Model.class, this);
         Game.getResourceManager().load(BoardPointer.ModelFilepath, Model.class, this);
-        Game.getResourceManager().load(BoardGroundMark.ModelFilepath, Model.class, this);
+        //Game.getResourceManager().load(BoardGroundMark.ModelFilepath, Model.class, this);
     }
 
 
