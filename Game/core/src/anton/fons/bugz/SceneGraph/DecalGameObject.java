@@ -30,15 +30,13 @@ public class DecalGameObject extends SceneGraphNode
 
         //Once it's a child of a scene, add this decal to that parent scene
         addDecal(decal); //This function goes upwards to the scene in order to add the decal there
-
-        // Model model = Game.getResourceManager().get(modelFilepath, Model.class);
     }
 
     @Override
     protected void dispose()
     {
         super.dispose();
-        removeDecal(decal);
+        removeDecal(decal); //This function goes upwards to the scene in order to remove the decal from its scene
     }
 
     @Override

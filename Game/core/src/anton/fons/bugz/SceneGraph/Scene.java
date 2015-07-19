@@ -92,7 +92,7 @@ public abstract class Scene extends SceneGraphNode
         if(Game.getResourceManager().sceneLoaded(this))
         {
             _render(modelBatch, environment);
-            for(Decal dec : decals)
+           for(Decal dec : decals)
             {
                 decalBatch.add(dec);
             }

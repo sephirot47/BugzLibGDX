@@ -20,10 +20,7 @@ public class BoardScene extends Scene
         super.create();
 
         board = new Board();
-        addChild(board);
-
         canvas = new BoardCanvas(board);
-        setCanvas(canvas); //We set the canvas
 
         //Set camera
         Camera cam = getCamera();
@@ -44,6 +41,13 @@ public class BoardScene extends Scene
         //Game.getResourceManager().load(BoardGroundMark.ModelFilepath, Model.class, this);
     }
 
+    @Override
+    public void onAssetsLoaded()
+    {
+        super.onAssetsLoaded();
+        setCanvas(canvas);
+        addChild(board);
+    }
 
     @Override
     protected void update(float deltaTime)

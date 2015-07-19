@@ -7,15 +7,18 @@ import anton.fons.bugz.SceneGraph.GameObject;
 
 public class BoardPointer extends GameObject
 {
+    private Board board;
+
     public static final String ModelFilepath = "models/board/pointer/pointer.g3db";
     private final static float PointerHeight = 30f;
     private final static float WaveAmount = 6f, WaveMovSpeed = 5f;
 
     private float time = 0.0f;
 
-    public BoardPointer()
+    public BoardPointer(Board parentBoard)
     {
         super(ModelFilepath);
+        board = parentBoard;
     }
 
     @Override
@@ -35,7 +38,7 @@ public class BoardPointer extends GameObject
         super.update(deltaTime);
         time += deltaTime;
 
-        Vector3 position = Board.getWorldTilePosition();
+        Vector3 position = board.getWorldPositionFromTile(board.getPointerTilePosition() );
         setPosition(position.x, PointerHeight, position.z);
 
         //Apply the wave movement

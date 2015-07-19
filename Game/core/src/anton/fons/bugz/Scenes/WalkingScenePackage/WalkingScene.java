@@ -17,12 +17,10 @@ public class WalkingScene extends Scene
         super.create();
 
         walkingBug = new WalkingBug();
-        addChild(walkingBug);
 
         walkingBug.setPosition(0.2f, 0.2f, 0.2f);
 
         planet = new Planet(walkingBug);
-        addChild(planet);
     }
 
     @Override
@@ -31,6 +29,14 @@ public class WalkingScene extends Scene
         //load everything we need
         Game.getResourceManager().load(walkingBug.getModelFilepath(), Model.class, this);
         Game.getResourceManager().load(planet.getModelFilepath(), Model.class, this);
+    }
+
+    @Override
+    public void onAssetsLoaded()
+    {
+        super.onAssetsLoaded();
+        addChild(walkingBug);
+        addChild(planet);
     }
 
     public void onStepDone()

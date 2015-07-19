@@ -49,6 +49,7 @@ public class SceneGraphNode
     {
         for(SceneGraphNode child : children) child._dispose();
         dispose();
+        if(parent != null) parent.removeChild(this);
     }
 
     public final void _pause()
@@ -86,6 +87,7 @@ public class SceneGraphNode
         {
             children.add(child);
             child.parent = this;
+            child._create();
         }
 
         public final boolean hasChild(SceneGraphNode child)

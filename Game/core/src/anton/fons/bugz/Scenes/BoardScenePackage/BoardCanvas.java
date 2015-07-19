@@ -97,9 +97,9 @@ public class BoardCanvas extends Canvas
 
     private void onArrowButtonPressed(ImageButton arrowButton)
     {
-        if(arrowButton == btnUp) board.translatePointerTilePosition(0, -1);
-        else if(arrowButton == btnDown) board.translatePointerTilePosition(0, 1);
-        else if(arrowButton == btnLeft) board.translatePointerTilePosition(-1, 0);
-        else if(arrowButton == btnRight) board.translatePointerTilePosition(1, 0);
+        if(arrowButton == btnUp) board.translateCurrentTilePosition(0, -1);
+        else if(arrowButton == btnDown) board.translateCurrentTilePosition(0, 1);
+        else if(arrowButton == btnLeft) board.translateCurrentTilePosition(-1, 0);
+        else if(arrowButton == btnRight) board.translateCurrentTilePosition(1, 0);
     }
 }
