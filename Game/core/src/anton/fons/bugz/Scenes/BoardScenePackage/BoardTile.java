@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public class BoardTile
 {
+    private BoardBug bug = null;
     private BoardGroundMark mark;
     private Vector2 tilePosition;
     private Board board;
@@ -32,11 +33,13 @@ public class BoardTile
         mark = null;
     }
 
+    public void setBug(BoardBug bug) { this.bug = bug; }
+    public BoardBug getBug() { return bug; }
+
     public BoardGroundMark getMark()
     {
         return mark;
     }
-
     public Vector2 getTilePosition()
     {
         return new Vector2(tilePosition.x, tilePosition.y);

@@ -10,6 +10,7 @@ import anton.fons.bugz.SceneGraph.GameObject;
 public class Board extends GameObject
 {
     private BoardPointer pointer;
+    private ArrayList< BoardBug > bugs; //Tiles matrix
     private ArrayList< ArrayList<BoardTile> > tiles; //Tiles matrix
     private BoardTile currentTile;
 
@@ -22,6 +23,8 @@ public class Board extends GameObject
     public Board()
     {
         super("models/board/board.g3dj");
+
+        bugs = new ArrayList<BoardBug>();
 
         //Create the BoardTile Matrix ///////////////////
         tiles = new ArrayList< ArrayList<BoardTile> >();
@@ -45,6 +48,11 @@ public class Board extends GameObject
         pointer = new BoardPointer(this);
         setScale(0.02f);
         addChild(pointer);
+
+        BoardBug bug1 = new BoardBug(this);
+        addChild(bug1);
+        bug1.setTilePosition(3,3);
+        bugs.add(bug1);
     }
 
     @Override

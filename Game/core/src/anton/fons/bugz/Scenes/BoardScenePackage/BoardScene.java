@@ -41,6 +41,12 @@ public class BoardScene extends Scene
         //load everything we need
         Game.getResourceManager().load(board.getModelFilepath(), Model.class, this);
         Game.getResourceManager().load(BoardPointer.ModelFilepath, Model.class, this);
+
+        Game.getResourceManager().load(BoardBug.ModelFilepath1, Model.class, this);
+        Game.getResourceManager().load(BoardBug.ModelFilepath2, Model.class, this);
+        Game.getResourceManager().load(BoardBug.ModelFilepath3, Model.class, this);
+        Game.getResourceManager().load(BoardBug.ModelFilepath4, Model.class, this);
+
         //Game.getResourceManager().load(BoardGroundMark.ModelFilepath, Model.class, this);
     }
 

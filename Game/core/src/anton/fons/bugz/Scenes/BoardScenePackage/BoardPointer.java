@@ -9,6 +9,7 @@ public class BoardPointer extends GameObject
     private Board board;
 
     public static final String ModelFilepath = "models/board/pointer/pointer.g3db";
+
     private final static float PointerHeight = 30f;
     private final static float WaveAmount = 6f, WaveMovSpeed = 5f;
 
