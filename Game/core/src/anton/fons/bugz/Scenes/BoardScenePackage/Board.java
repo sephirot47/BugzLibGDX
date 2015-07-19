@@ -89,10 +89,12 @@ public class Board extends GameObject
     {
         if(outOfBoard(x,y)) return;
         if(currentTile != null) currentTile.clearMark(); //Clear la marca que hi havia del pointer
+
+        clearAllMarks();
+
         currentTile = getTile(x, y);
         currentTile.setMark(BoardGroundMark.GroundMarkType.Pointer);
 
-        clearAllMarks();
         BoardTile tile;
         tile = getTile(x+1, y); if(tile != null) tile.setMark(BoardGroundMark.GroundMarkType.Good);
         tile = getTile(x+2, y); if(tile != null) tile.setMark(BoardGroundMark.GroundMarkType.Good);

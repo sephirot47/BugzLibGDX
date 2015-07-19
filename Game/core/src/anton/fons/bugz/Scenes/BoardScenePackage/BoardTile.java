@@ -19,15 +19,7 @@ public class BoardTile
     {
         if(mark != null) clearMark();
 
-        String filepath = "";
-        if(markType == BoardGroundMark.GroundMarkType.Pointer)
-            filepath = BoardGroundMark.GroundMarkPointerFilepath;
-        else if(markType == BoardGroundMark.GroundMarkType.Good)
-            filepath = BoardGroundMark.GroundMarkGoodFilepath;
-        else
-            filepath = BoardGroundMark.GroundMarkBadFilepath;
-
-        mark = new BoardGroundMark(filepath);
+        mark = new BoardGroundMark(markType);
         mark.setTilePosition( new Vector2(tilePosition.x, tilePosition.y), board );
         board.addChild(mark); //Add it to the board to be rendered
     }
@@ -47,6 +39,6 @@ public class BoardTile
 
     public Vector2 getTilePosition()
     {
-        return tilePosition;
+        return new Vector2(tilePosition.x, tilePosition.y);
     }
 }

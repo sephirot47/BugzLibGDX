@@ -1,6 +1,5 @@
 package anton.fons.bugz.Scenes.BoardScenePackage;
 
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 import anton.fons.bugz.SceneGraph.GameObject;
@@ -26,10 +25,6 @@ public class BoardPointer extends GameObject
     {
         super.create();
         setScale(0.05f);
-    }
-
-    public void updatePointerPosition(Vector2 tilePosition)
-    {
     }
 
     @Override

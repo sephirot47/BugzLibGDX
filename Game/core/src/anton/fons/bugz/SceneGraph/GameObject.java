@@ -11,7 +11,8 @@ import anton.fons.bugz.Game;
 
 public class GameObject extends SceneGraphNode implements AnimationController.AnimationListener
 {
-    private String modelFilepath;
+    private String modelFilepath = "";
+    private Model model = null;
     protected ModelInstance modelInstance;
     private AnimationController animationController;
 
@@ -21,12 +22,20 @@ public class GameObject extends SceneGraphNode implements AnimationController.An
         this.modelFilepath = modelFilepath;
     }
 
+    //This will only work if called before create
+    protected void setModelBeforeCreate(Model model)
+    {
+        this.model = model;
+    }
+
     @Override
     protected void create()
     {
         super.create();
 
-        Model model = Game.getResourceManager().get(modelFilepath, Model.class);
+        if(this.model == null) //If model != null, it means you want to use a custom model (plane model created by code for example)
+            model = Game.getResourceManager().get(modelFilepath, Model.class);
+
         modelInstance = new ModelInstance(model); //get the model instance
         animationController = new AnimationController(modelInstance); //set the animController
         animationController.allowSameAnimation = false;
@@ -40,7 +49,8 @@ public class GameObject extends SceneGraphNode implements AnimationController.An
         catch(Exception e) { /*This is to avoid an app crash due to a libGDX iterators bug :S*/ }
 
         updateTransform();
-        modelBatch.render(modelInstance, environment); //Draw the model instance
+        if(affectedByLight) modelBatch.render(modelInstance, environment); //Draw the model instance
+        else modelBatch.render(modelInstance); //Not affected by light (we dont specify environment)
     }
     /////////////////////////////////////////////////////////////////////////////
 

@@ -2,7 +2,6 @@ package anton.fons.bugz.SceneGraph;
 
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
-import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
@@ -11,6 +10,8 @@ import java.util.ArrayList;
 
 public class SceneGraphNode
 {
+    protected boolean affectedByLight = true;
+
     private SceneGraphNode parent;
     private ArrayList<SceneGraphNode> children;
 
@@ -111,10 +112,6 @@ public class SceneGraphNode
                 removeChild(child);
             }
         }
-
-        //You must do it like this until the scene is reached
-        public void addDecal(Decal dec) { if(parent != null) parent.addDecal(dec);}
-        public void removeDecal(Decal dec) { if(parent != null) parent.removeDecal(dec);}
 
         public SceneGraphNode getParent() { return parent; }
         public final ArrayList<SceneGraphNode> getChildren() { return children; }

@@ -1,7 +1,10 @@
 package anton.fons.bugz.Scenes.BoardScenePackage;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Model;
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 
 import anton.fons.bugz.Game;
@@ -39,6 +42,13 @@ public class BoardScene extends Scene
         Game.getResourceManager().load(board.getModelFilepath(), Model.class, this);
         Game.getResourceManager().load(BoardPointer.ModelFilepath, Model.class, this);
         //Game.getResourceManager().load(BoardGroundMark.ModelFilepath, Model.class, this);
+    }
+
+    @Override
+    protected void prerender(ModelBatch modelBatch, Environment environment)
+    {
+        super.prerender(modelBatch, environment);
+        Gdx.gl.glClearColor(0.2f, 0.4f, 1.0f, 1.0f); //Clear with a blue
     }
 
     @Override

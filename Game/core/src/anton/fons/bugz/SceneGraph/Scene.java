@@ -7,12 +7,7 @@ import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
-import com.badlogic.gdx.graphics.g3d.decals.CameraGroupStrategy;
-import com.badlogic.gdx.graphics.g3d.decals.Decal;
-import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
-
-import java.util.ArrayList;
 
 import anton.fons.bugz.Game;
 
@@ -21,8 +16,6 @@ public abstract class Scene extends SceneGraphNode
     public boolean assetsLoaded = false;
 
     private ModelBatch modelBatch;
-    private DecalBatch decalBatch;
-    private ArrayList<Decal> decals;
 
     private Canvas canvas = null;
 
@@ -51,8 +44,6 @@ public abstract class Scene extends SceneGraphNode
         cam.update();
 
         modelBatch = new ModelBatch();
-        decalBatch = new DecalBatch(new CameraGroupStrategy(cam));
-        decals = new ArrayList<Decal>();
 
         create();
 
@@ -92,11 +83,6 @@ public abstract class Scene extends SceneGraphNode
         if(Game.getResourceManager().sceneLoaded(this))
         {
             _render(modelBatch, environment);
-           for(Decal dec : decals)
-            {
-                decalBatch.add(dec);
-            }
-            decalBatch.flush();
         }
     }
 
@@ -124,8 +110,6 @@ public abstract class Scene extends SceneGraphNode
     {
         super.dispose();
         modelBatch.dispose();
-        decalBatch.dispose();
-
         removeAllChildren();
     }
 
@@ -135,17 +119,6 @@ public abstract class Scene extends SceneGraphNode
         super.resize(width, height);
     }
 
-    @Override
-    public void addDecal(Decal dec)
-    {
-        decals.add(dec);
-    }
-
-    @Override
-    public void removeDecal(Decal dec)
-    {
-        decals.remove(dec);
-    }
 
     public void setEnvironment(Environment env) { environment = env; }
     //public void setViewport(Viewport viewport) { this.viewport = viewport; }
