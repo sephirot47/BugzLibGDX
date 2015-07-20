@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 import anton.fons.bugz.Game;
 
@@ -20,6 +22,8 @@ public abstract class Scene extends SceneGraphNode
     private Canvas canvas = null;
 
     private Environment environment;
+
+    private FitViewport viewport;
     private Camera cam;
 
     public Scene()
@@ -42,6 +46,9 @@ public abstract class Scene extends SceneGraphNode
         cam.near = 1f;
         cam.far = 300f;
         cam.update();
+
+        viewport = new FitViewport(2000, 1000, cam);
+        viewport.apply();
 
         modelBatch = new ModelBatch();
 
@@ -90,7 +97,10 @@ public abstract class Scene extends SceneGraphNode
     protected void prerender(ModelBatch modelBatch, Environment environment)
     {
         super.prerender(modelBatch, environment);
-        //Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+       //Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight());
+        //viewport.setScaling(Scaling.fit);
+       // viewport.setScreenX(1000);
+      //  viewport.apply();
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
         modelBatch.begin(cam);
@@ -117,6 +127,7 @@ public abstract class Scene extends SceneGraphNode
     public void resize(int width, int height)
     {
         super.resize(width, height);
+        viewport.update(width, height);
     }
 
 
@@ -135,7 +146,7 @@ public abstract class Scene extends SceneGraphNode
     public SceneGraphNode getParent() { return this; }
 
     public Environment getEnvironment() { return environment; }
-    //public Viewport getViewport() { return viewport; }
+    public Viewport getViewport() { return viewport; }
     public Camera getCamera() { return cam; }
     public Canvas getCanvas() { return canvas; }
 }

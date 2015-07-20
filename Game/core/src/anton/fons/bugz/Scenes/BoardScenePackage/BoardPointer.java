@@ -34,7 +34,7 @@ public class BoardPointer extends GameObject
         super.update(deltaTime);
         time += deltaTime;
 
-        Vector3 position = board.getWorldPositionFromTile(board.getPointerTilePosition() );
+        Vector3 position = board.getWorldPositionFromTile(board.getCurrentTilePosition() );
         setPosition(position.x, PointerHeight, position.z);
 
         //Apply the wave movement

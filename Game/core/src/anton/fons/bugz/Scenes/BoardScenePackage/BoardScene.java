@@ -22,14 +22,17 @@ public class BoardScene extends Scene
     {
         super.create();
 
+        Game.AndroidResolver.changeOrientationToLandscape();
+
         board = new Board();
-        canvas = new BoardCanvas(board);
+        canvas = new BoardCanvas(this, board);
+        board.setDialogWidget(canvas.getActionDialogWidget());
 
         //Set camera
         Camera cam = getCamera();
         cam.position.x = 0f;
-        cam.position.y = 4f;
-        cam.position.z = 5.5f;
+        cam.position.y = 5f;
+        cam.position.z = 3.0f;
 
         cam.lookAt( 0f, 0f, 0f );
         cam.update();
@@ -55,6 +58,7 @@ public class BoardScene extends Scene
     {
         super.prerender(modelBatch, environment);
         Gdx.gl.glClearColor(0.2f, 0.4f, 1.0f, 1.0f); //Clear with a blue
+        //Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight());
     }
 
     @Override

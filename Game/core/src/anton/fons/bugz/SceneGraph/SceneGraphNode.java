@@ -48,7 +48,7 @@ public class SceneGraphNode
 
     public final void _dispose()
     {
-        for(SceneGraphNode child : children) child._dispose();
+        while(children.size() > 0) children.get(0)._dispose();
         dispose();
         if(parent != null) parent.removeChild(this);
     }
@@ -146,6 +146,8 @@ public class SceneGraphNode
         //TRANSLATE
         public void setPosition(float x, float y, float z) { this.position = new Vector3(x,y,z); }
         public void setPosition(Vector3 pos) { this.position = new Vector3(pos.x, pos.y, pos.z); }
+        public void translate(Vector3 pos) { this.position.add(pos); }
+        public void translate(float x, float y, float z) { this.position.add(new Vector3(x,y,z)); }
 
         public Vector3 getPosition() { return position; }
         public Vector3 getScale() { return scale; }

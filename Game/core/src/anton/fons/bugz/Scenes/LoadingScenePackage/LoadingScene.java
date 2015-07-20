@@ -15,7 +15,7 @@ public class LoadingScene extends Scene
 
     private void createCanvas()
     {
-        canvas = new LoadingCanvas();
+        canvas = new LoadingCanvas(this);
         setCanvas(canvas); //We set the canvas
     }
 

@@ -30,9 +30,7 @@ public class BoardGroundMark extends GameObject
     public static final Texture GroundMarkGoodTexture =  new Texture(Gdx.files.internal(GroundMarkGoodFilepath));
     public static final Texture GroundMarkBadTexture =  new Texture(Gdx.files.internal(GroundMarkBadFilepath));
 
-    private Vector2 tilePosition;
     private static final float MarkHeight = 3.3f;
-    private float time = 0.0f;
 
     public BoardGroundMark(GroundMarkType markType)
     {
@@ -52,8 +50,6 @@ public class BoardGroundMark extends GameObject
 
         this.affectedByLight = false;
         setModelBeforeCreate(planeModel);
-
-        tilePosition = new Vector2();
     }
 
     @Override
@@ -66,8 +62,6 @@ public class BoardGroundMark extends GameObject
 
     public void setTilePosition(Vector2 tilePosition, Board board)
     {
-        this.tilePosition = new Vector2(tilePosition.x, tilePosition.y);
-
         Vector3 position = board.getWorldPositionFromTile( tilePosition );
         setPosition(position.x, MarkHeight, position.z);
     }
@@ -76,7 +70,6 @@ public class BoardGroundMark extends GameObject
     protected void update(float deltaTime)
     {
         super.update(deltaTime);
-        time += deltaTime;
     }
 
     //Builds a 3d Plane :)

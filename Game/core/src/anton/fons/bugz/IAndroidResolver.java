@@ -2,5 +2,7 @@ package anton.fons.bugz;
 
 public interface IAndroidResolver
 {
-    public void log(String text);
+    void log(String text);
+    void changeOrientationToPortrait();
+    void changeOrientationToLandscape();
 }

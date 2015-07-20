@@ -3,16 +3,15 @@ package anton.fons.bugz.Scenes.BoardScenePackage;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
-import java.util.ArrayList;
-
 import anton.fons.bugz.SceneGraph.GameObject;
 
 public class Board extends GameObject
 {
+    private BoardGameController gameController;
+    private BoardTileManager tileManager;
+
     private BoardPointer pointer;
-    private ArrayList< BoardBug > bugs; //Tiles matrix
-    private ArrayList< ArrayList<BoardTile> > tiles; //Tiles matrix
-    private BoardTile currentTile;
+    private BoardActionDialogWidget dialogWidget;
 
     public final static int BoardWidthInTiles = 8; //In tiles
     public final static int BoardHeightInTiles = 8; //In tiles
@@ -24,21 +23,8 @@ public class Board extends GameObject
     {
         super("models/board/board.g3dj");
 
-        bugs = new ArrayList<BoardBug>();
-
-        //Create the BoardTile Matrix ///////////////////
-        tiles = new ArrayList< ArrayList<BoardTile> >();
-        for(int y = 0; y  < BoardHeightInTiles; ++y)
-        {
-            ArrayList<BoardTile> tileRow = new ArrayList<BoardTile>();
-            for(int x = 0; x < BoardWidthInTiles; ++x)
-                tileRow.add(new BoardTile(this, x, y));
-
-            tiles.add(tileRow);
-        }
-        /////////////////////////////////////////////////
-
-        setCurrentTilePosition(0, 0);
+        gameController = new BoardGameController(this);
+        tileManager = new BoardTileManager(this);
     }
 
     @Override
@@ -49,10 +35,12 @@ public class Board extends GameObject
         setScale(0.02f);
         addChild(pointer);
 
-        BoardBug bug1 = new BoardBug(this);
-        addChild(bug1);
-        bug1.setTilePosition(3,3);
-        bugs.add(bug1);
+        tileManager.createBug(new Vector2(3, 3));
+        tileManager.createBug(new Vector2(7, 4));
+        tileManager.createBug(new Vector2(3, 5));
+        tileManager.createBug(new Vector2(1, 2));
+
+        setCurrentTilePosition(0, 0);
     }
 
     @Override
@@ -61,27 +49,12 @@ public class Board extends GameObject
         super.update(deltaTime);
     }
 
-
-    public Vector2 getPointerTilePosition()
+    public Vector2 getCurrentTilePosition()
     {
-        return currentTile.getTilePosition();
+        return tileManager.getCurrentTilePosition();
     }
 
-    public BoardTile getTile(int x, int y)
-    {
-        if(outOfBoard(x,y)) return null;
-        return tiles.get(y).get(x);
-    }
-    public BoardTile getTile(Vector2 tilePos) { return getTile((int) tilePos.x, (int) tilePos.y); }
-
-    public void clearAllMarks()
-    {
-        for(ArrayList<BoardTile> tilesArray : tiles)
-            for(BoardTile tile : tilesArray)
-                tile.clearMark();
-    }
-
-    public Vector3 getWorldPositionFromTile(Vector2 tilePosition)
+    public static Vector3 getWorldPositionFromTile(Vector2 tilePosition)
     {
         float x = tilePosition.x * Board.TileSize - Board.BoardWidth / 2f + Board.TileSize / 2f;
         float z = tilePosition.y * Board.TileSize - Board.BoardHeight / 2f + Board.TileSize / 2f;
@@ -96,38 +69,33 @@ public class Board extends GameObject
     public void setCurrentTilePosition(int x, int y)
     {
         if(outOfBoard(x,y)) return;
-        if(currentTile != null) currentTile.clearMark(); //Clear la marca que hi havia del pointer
+        tileManager.clearAllMarks(); //Clear la marca que hi havia del pointer
 
-        clearAllMarks();
+        Vector2 tilePos = new Vector2(x,y);
+        tileManager.setMark(tilePos, BoardGroundMark.GroundMarkType.Pointer);
 
-        currentTile = getTile(x, y);
-        currentTile.setMark(BoardGroundMark.GroundMarkType.Pointer);
-
-        BoardTile tile;
-        tile = getTile(x+1, y); if(tile != null) tile.setMark(BoardGroundMark.GroundMarkType.Good);
-        tile = getTile(x+2, y); if(tile != null) tile.setMark(BoardGroundMark.GroundMarkType.Good);
-        tile = getTile(x, y+1); if(tile != null) tile.setMark(BoardGroundMark.GroundMarkType.Good);
-        tile = getTile(x, y+2); if(tile != null) tile.setMark(BoardGroundMark.GroundMarkType.Good);
-        tile = getTile(x, y-1); if(tile != null) tile.setMark(BoardGroundMark.GroundMarkType.Good);
-        tile = getTile(x, y-2); if(tile != null) tile.setMark(BoardGroundMark.GroundMarkType.Good);
-        tile = getTile(x-1, y); if(tile != null) tile.setMark(BoardGroundMark.GroundMarkType.Good);
-        tile = getTile(x-2, y); if(tile != null) tile.setMark(BoardGroundMark.GroundMarkType.Good);
+        if(tileManager.tileEmpty(tilePos))
+        {
+            dialogWidget.hide();
+        }
+        else
+        {
+            dialogWidget.show();
+        }
     }
 
     public void translateCurrentTilePosition(int x, int y)
     {
-        if(currentTile == null) return;
-        currentTile.clearMark(); //Netejem la marca que hi havia del pointer
-
-        Vector2 currentTilePos = currentTile.getTilePosition();
-        currentTilePos.x += x;
-        currentTilePos.y += y;
-        currentTilePos.x = Math.max(currentTilePos.x, 0);
+        Vector2 currentTilePos = getCurrentTilePosition();
+        currentTilePos.x += x; currentTilePos.x = Math.max(currentTilePos.x, 0);
+        currentTilePos.y += y; currentTilePos.y = Math.max(currentTilePos.y, 0);
         currentTilePos.x = Math.min(currentTilePos.x, BoardWidthInTiles - 1);
-        currentTilePos.y = Math.max(currentTilePos.y, 0);
         currentTilePos.y = Math.min(currentTilePos.y, BoardHeightInTiles - 1);
-
         setCurrentTilePosition((int) currentTilePos.x, (int) currentTilePos.y);
-
     }
+
+    public void setDialogWidget(BoardActionDialogWidget dialogWidget) { this.dialogWidget = dialogWidget; }
+    public BoardActionDialogWidget getDialogWidget() { return dialogWidget; }
+
+    public BoardTileManager getTileManager() { return tileManager; }
 }

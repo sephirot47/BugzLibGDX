@@ -33,7 +33,10 @@ public class BoardTile
         mark = null;
     }
 
-    public void setBug(BoardBug bug) { this.bug = bug; }
+    public void setBug(BoardBug bug)
+    {
+        this.bug = bug;
+    }
     public BoardBug getBug() { return bug; }
 
     public BoardGroundMark getMark()
